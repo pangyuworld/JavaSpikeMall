@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pang.mall.mapper.ItemMapper">
+    <resultMap id="BaseResultMap" type="com.pang.mall.entity.Item">
+        <id column="item_id" property="itemId" jdbcType="INTEGER"/>
+        <result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        <result column="item_count" property="itemCount" jdbcType="INTEGER"/>
+        <result column="seller_id" property="sellerId" jdbcType="INTEGER"/>
+    </resultMap>
+    <insert id="addItem" parameterType="com.pang.mall.entity.Item">
+        insert into t_item(item_name, item_count,seller_id)
+        values (#{itemName},#{itemCount},#{sellerId})
+    </insert>
+    <update id="reduceItemCount">
+        update t_item set item_count = IF(item_count &lt; 1, 0, item_count -1) where item_id=#{itemId}
+    </update>
+    <select id="getCount" resultType="int">
+        select t_item.item_count from t_item where item_id=#{itemId}
+    </select>
+    <select id="selectItemById" resultMap="BaseResultMap">
+        select
+            item_id, item_name, item_count, seller_id
+        from t_item
+        where item_id=#{itemId}
+    </select>
+    <select id="selectAllItem" resultMap="BaseResultMap">
+        select
+            item_id, item_name, item_count, seller_id
+        from t_item
+    </select>
+    <update id="updateItem" parameterType="com.pang.mall.entity.Item">
+        update t_item
+        <set>
+            item_count=#{itemCount},
+            item_name=#{itemName},
+            seller_id=#{sellerId}
+        </set>
+        where item_id=#{itemId}
+    </update>
+    <delete id="deleteItem">
+        delete from t_item where item_id=#{itemId}
+    </delete>
+</mapper>
