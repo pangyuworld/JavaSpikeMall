@@ -3,9 +3,11 @@ package com.pang.mall.utils.token;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.pang.mall.common.exception.TokenTimeOutException;
+import com.pang.mall.common.exception.UserActionException;
+import com.pang.mall.common.restful.ResponseEnum;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * @author pang
@@ -53,14 +55,18 @@ public class TokenUtil {
 
     /**
      * 解析token
+     *
      * @param token 要解析的token
      * @return 包含token认证信息的对象
      * @throws TokenTimeOutException 当token过期时候，抛出该异常
      */
-    public static DecodedJWT parseJWT(String token) throws TokenTimeOutException{
+    public static DecodedJWT parseJWT(String token) {
+        if (token == null) {
+            throw new UserActionException("无认证信息", ResponseEnum.NOT_LOGIN);
+        }
         DecodedJWT decode = JWT.decode(token);
-        long expiresDate=decode.getExpiresAt().getTime();
-        if (expiresDate<System.currentTimeMillis()){
+        long expiresDate = decode.getExpiresAt().getTime();
+        if (expiresDate < System.currentTimeMillis()) {
             throw new TokenTimeOutException();
         }
         return decode;

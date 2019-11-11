@@ -1,4 +1,4 @@
-package com.pang.mall.utils.token;
+package com.pang.mall.common.exception;
 
 /**
  * @author pang
@@ -10,6 +10,10 @@ package com.pang.mall.utils.token;
  */
 public class TokenTimeOutException extends RuntimeException{
     public TokenTimeOutException() {
-        super("token过期，请重新登录");
+        this("token过期，请重新登录");
+    }
+
+    public TokenTimeOutException(String message) {
+        super(message);
     }
 }

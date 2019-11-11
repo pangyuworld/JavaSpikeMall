@@ -13,6 +13,28 @@ public class Buyer {
 
     private String buyerName;
 
+    private String userName;
+
+    private String password;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public Buyer setUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Buyer setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
     public long getBuyerId() {
         return buyerId;
     }

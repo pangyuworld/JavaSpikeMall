@@ -24,6 +24,14 @@ public interface SellerMapper {
     Seller selectSellerById(long sellerId);
 
     /**
+     * 根据登录名查找卖家
+     *
+     * @param userName 登录名
+     * @return 卖家信息
+     */
+    Seller selectSellerByLoginName(String userName);
+
+    /**
      * 查找所有卖家
      *
      * @return 卖家信息列表
