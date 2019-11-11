@@ -4,11 +4,12 @@ import com.pang.mall.common.restful.ResponseEnum;
 import com.pang.mall.common.restful.ResponseJSON;
 import com.pang.mall.entity.Buyer;
 import com.pang.mall.services.BuyerService;
-import com.pang.mall.utils.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletRequest;
 import java.util.Map;
 
 /**
@@ -25,16 +26,16 @@ public class BuyerController {
     @Autowired
     private BuyerService buyerService;
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public ResponseJSON<Boolean> register(@RequestBody Buyer buyer){
-        return new ResponseJSON<>(buyerService.register(buyer),ResponseEnum.REGISTER_SUCCESS);
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseJSON<Boolean> register(@RequestBody Buyer buyer) {
+        return new ResponseJSON<>(buyerService.register(buyer), ResponseEnum.REGISTER_SUCCESS);
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ResponseJSON<Map<String,Object>> login(@RequestBody Map<String,String> map){
-        String userName=map.get("userName");
-        String password=map.get("password");
-        return new ResponseJSON<>(buyerService.login(userName,password),ResponseEnum.LOGIN_SUCCESS);
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseJSON<Map<String, Object>> login(@RequestBody Map<String, String> map) {
+        String userName = map.get("userName");
+        String password = map.get("password");
+        return new ResponseJSON<>(buyerService.login(userName, password), ResponseEnum.LOGIN_SUCCESS);
     }
-    
+
 }
