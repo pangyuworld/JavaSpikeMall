@@ -7,11 +7,11 @@
         <result column="order_status" property="orderStatus" jdbcType="INTEGER"/>
         <result column="order_number" property="orderNumber" jdbcType="INTEGER"/>
         <result column="item_id" property="itemId" jdbcType="INTEGER"/>
-        <result column="buyer_id" property="buyerId" jdbcType="INTEGER"/>
+        <result column="buyer_id" property="buyerId" jdbcType="VARCHAR"/>
     </resultMap>
     <insert id="addOrder" parameterType="com.pang.mall.entity.Order">
-        insert into t_order(order_id, order_time, item_id, buyer_id, order_status, order_number)
-        values (#{orderId},#{orderTime},#{itemId},#{buyerId},#{orderStatus},#{orderNumber})
+        insert into t_order( order_time, item_id, buyer_id, order_status, order_number)
+        values (#{orderTime},#{itemId},#{buyerId},#{orderStatus},#{orderNumber})
     </insert>
     <select id="selectOrderById" resultMap="BaseResultMap">
         select

@@ -1,6 +1,7 @@
 package com.pang.mall.util.redis;
 
 import com.pang.mall.entity.Buyer;
+import com.pang.mall.utils.redis.RedisTool;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,18 @@ public class RedisTest {
     @Autowired
     private RedisTemplate redisTemplate;
     private String channelName="mall_queue";
+    @Autowired
+    private RedisTool redisTool;
 
     @Test
     public void test(){
-        redisTemplate.opsForValue().set("miaosha","sha");
-        System.out.println(redisTemplate.opsForValue().get("miaosha"));
+        Buyer buyer=new Buyer();
+        buyer.setBuyerName("买家姓名");
+        buyer.setUserName("登录名");
+        buyer.setBuyerId(1);
+        redisTool.set("user",buyer);
+        Buyer b= (Buyer) redisTool.get("user");
+        System.out.println(b.getUserName());
     }
 
     @Test
@@ -37,5 +45,13 @@ public class RedisTest {
         buyer.setUserName("登录名");
         buyer.setBuyerId(1);
         redisTemplate.convertAndSend(channelName,buyer);
+    }
+
+    @Test
+    public void decrementTest(){
+        redisTool.set("test",10);
+        System.out.println(redisTool.get("test"));
+        redisTool.decrement("test");
+        System.out.println(redisTool.get("test"));
     }
 }

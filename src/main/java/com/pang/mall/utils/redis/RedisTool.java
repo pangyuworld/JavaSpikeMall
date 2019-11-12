@@ -26,6 +26,7 @@ public class RedisTool {
     private ListOperations redisList;
     private HashOperations redisHash;
     private SetOperations redisSet;
+    private ZSetOperations redisZSet;
     @Value("${spring.redis.listener}")
     private String channelName;
 
@@ -35,6 +36,7 @@ public class RedisTool {
         redisList = redisTemplate.opsForList();
         redisHash = redisTemplate.opsForHash();
         redisSet = redisTemplate.opsForSet();
+        redisZSet = redisTemplate.opsForZSet();
     }
 
     /**

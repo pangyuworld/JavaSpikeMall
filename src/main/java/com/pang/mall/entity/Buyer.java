@@ -1,5 +1,9 @@
 package com.pang.mall.entity;
 
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Pattern;
+
 /**
  * @author pang
  * @version V1.0
@@ -9,12 +13,16 @@ package com.pang.mall.entity;
  * @date 2019/11/11 9:54
  */
 public class Buyer {
+    /** 买家ID */
     private long buyerId;
-
+    /** 买家姓名 */
+    @Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+$",message = "昵称不符合规则")
     private String buyerName;
-
+    /** 买家登录名 */
+    @Pattern(regexp = "^\\w{6,20}$",message = "用户名不符合规则")
     private String userName;
-
+    /** 买家登录密码 */
+    @Pattern(regexp = "^\\w{6,20}$",message = "密码不符合规则")
     private String password;
 
     public String getUserName() {
@@ -53,11 +61,4 @@ public class Buyer {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "Buyer{" +
-                "buyerId=" + buyerId +
-                ", buyerName='" + buyerName + '\'' +
-                '}';
-    }
 }

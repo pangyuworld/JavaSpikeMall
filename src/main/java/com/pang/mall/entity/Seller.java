@@ -1,5 +1,7 @@
 package com.pang.mall.entity;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * @author pang
  * @version V1.0
@@ -9,13 +11,16 @@ package com.pang.mall.entity;
  * @date 2019/11/11 9:40
  */
 public class Seller {
-
+    /** 卖家ID */
     private long sellerId;
-
+    /** 卖家姓名 */
+    @Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+$", message = "昵称不符合规则")
     private String sellerName;
-
+    /** 卖家登录名 */
+    @Pattern(regexp = "^\\w{6,20}$", message = "用户名不符合规则")
     private String userName;
-
+    /** 卖家登录密码 */
+    @Pattern(regexp = "^\\w{6,20}$", message = "用户名不符合规则")
     private String password;
 
     public String getUserName() {

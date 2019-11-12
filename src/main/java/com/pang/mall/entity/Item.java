@@ -1,5 +1,9 @@
 package com.pang.mall.entity;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+
 /**
  * @author pang
  * @version V1.0
@@ -9,9 +13,16 @@ package com.pang.mall.entity;
  * @date 2019/11/11 10:03
  */
 public class Item {
+    /** 商品ID */
     private long itemId;
+    /** 商品名 */
+    @Pattern(regexp = "^[\\u4E00-\\u9FA5A-Za-z0-9_]+$", message = "商品名不符合规则")
     private String itemName;
+    /** 商品库存 */
+    @Max(value = 100000, message = "商品库存不得超过10W")
+    @Min(value = 0, message = "商品库存不得低于0")
     private int itemCount;
+    /** 商品所属商家的ID */
     private long sellerId;
 
     public long getItemId() {

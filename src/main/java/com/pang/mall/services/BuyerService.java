@@ -10,6 +10,7 @@ import com.pang.mall.utils.token.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,9 +75,9 @@ public class BuyerService {
      */
     public Map<String, Object> login(String userName, String password) {
         // 校验登录名
-        if (!ParameterTool.checkUserName(userName)) {
-            throw new UserActionException("用户名不符合要求", ResponseEnum.BAD_REQUEST);
-        }
+        // if (!ParameterTool.checkUserName(userName)) {
+        //     throw new UserActionException("用户名不符合要求", ResponseEnum.BAD_REQUEST);
+        // }
         // 校验密码
         if (!ParameterTool.checkPassword(password)) {
             throw new UserActionException("密码不符合要求", ResponseEnum.BAD_REQUEST);

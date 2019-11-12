@@ -1,8 +1,11 @@
 package com.pang.mall.interceptor;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.pang.mall.utils.redis.RedisTool;
 import com.pang.mall.utils.token.Token;
 import com.pang.mall.utils.token.TokenUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -19,7 +22,10 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2019/11/11 22:28
  */
 @Component
+@Order
 public class TokenInterceptor extends HandlerInterceptorAdapter {
+    @Autowired
+    private RedisTool redis;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
