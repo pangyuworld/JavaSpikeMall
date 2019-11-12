@@ -12,11 +12,11 @@ import com.pang.mall.common.exception.GenerateIDException;
  */
 public class SnowFlake {
     /** 机器ID */
-    private static long workedId=1L;
+    private static long workedId = 1L;
     /** 机器ID长度 */
     private static final long WORKED_ID_BIT = 5;
     /** 机房ID */
-    private static long dataCenterId=2L;
+    private static long dataCenterId = 2L;
     /** 机房ID长度 */
     private static final long DATA_CENTER_ID_BIT = 5;
     /** 序列号 */
@@ -55,7 +55,7 @@ public class SnowFlake {
             if (sequenceId == 0L) {
                 // 这里是因为当序列号超出最大值的时候，执行与操作会让序列号为0
                 // 如果出现了这种情况，示例里是等待下次执行
-                while (nowTime<=System.currentTimeMillis());
+                while (nowTime <= System.currentTimeMillis()) ;
                 return nextId();
             }
         } else {

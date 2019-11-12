@@ -23,21 +23,21 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HandlerMethod handlerMethod= (HandlerMethod) handler;
-        Token token=handlerMethod.getMethodAnnotation(Token.class);
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Token token = handlerMethod.getMethodAnnotation(Token.class);
         // 如果不存在token注解，则通过认证
-        if (token==null){
+        if (token == null) {
             return super.preHandle(request, response, handler);
         }
         // 如果存在token注解，则需要认证
         // TODO 如果redis里面存在该token，则直接通过认证，这个等做好redis客户端以后就可以实现了
         // TODO 如果redis未击中，则手动进行校验
         // 从认证中取出token字符串
-        String tokenStr=request.getHeader("Authorization");
+        String tokenStr = request.getHeader("Authorization");
         // 开始认证，如果认证出错，则直接抛出异常
         DecodedJWT decodedJWT = TokenUtil.parseJWT(tokenStr);
         // 认证通过，将token内保存的信息添加到请求中
-        request.setAttribute(decodedJWT.getSubject(),decodedJWT.getAudience());
+        request.setAttribute(decodedJWT.getSubject(), decodedJWT.getAudience());
         // 执行正常的操作
         return super.preHandle(request, response, handler);
     }

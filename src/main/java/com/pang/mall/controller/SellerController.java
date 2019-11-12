@@ -26,15 +26,15 @@ public class SellerController {
     @Autowired
     private SellerService sellerService;
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public ResponseJSON<Boolean> register(@RequestBody Seller seller){
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseJSON<Boolean> register(@RequestBody Seller seller) {
         return new ResponseJSON<>(sellerService.register(seller), ResponseEnum.REGISTER_SUCCESS);
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ResponseJSON<Map<String,Object>> login(@RequestBody Map<String,String> map){
-        String userName=map.get("userName");
-        String password=map.get("password");
-        return new ResponseJSON<>(sellerService.login(userName,password),ResponseEnum.LOGIN_SUCCESS);
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseJSON<Map<String, Object>> login(@RequestBody Map<String, String> map) {
+        String userName = map.get("userName");
+        String password = map.get("password");
+        return new ResponseJSON<>(sellerService.login(userName, password), ResponseEnum.LOGIN_SUCCESS);
     }
 }

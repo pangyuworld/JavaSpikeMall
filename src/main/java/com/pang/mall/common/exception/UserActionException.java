@@ -18,7 +18,7 @@ public class UserActionException extends RuntimeException {
      * 默认构造，系统异常
      */
     public UserActionException() {
-        this("用户操作异常。",ResponseEnum.SYSTEM_ERROR);
+        this("用户操作异常。", ResponseEnum.SYSTEM_ERROR);
     }
 
     /**

@@ -26,6 +26,7 @@ public interface BuyerMapper {
 
     /**
      * 根据登录名查找买家（主要用于登录）
+     *
      * @param userName 登录名
      * @return 买家信息
      */

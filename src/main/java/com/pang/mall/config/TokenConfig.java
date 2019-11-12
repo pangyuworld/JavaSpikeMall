@@ -23,7 +23,7 @@ public class TokenConfig {
     @PostConstruct
     public void setTokenTtl() {
         // TOKEN_TTL = Long.parseLong(tokenTtl);
-        TOKEN_TTL=tokenTtl;
+        TOKEN_TTL = tokenTtl;
     }
 
 }
