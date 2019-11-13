@@ -21,7 +21,7 @@ import java.util.Map;
  * @date 2019/11/11 21:24
  */
 @RestController
-@RequestMapping(value = "/seller")
+@RequestMapping(value = "/api/seller")
 public class SellerController {
     @Autowired
     private SellerService sellerService;

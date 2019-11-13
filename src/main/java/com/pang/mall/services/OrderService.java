@@ -43,10 +43,10 @@ public class OrderService {
         order.setOrderNumber(SnowFlake.nextId());
         // 设置当前订单状态
         order.setOrderStatus(OrderStatus.CREATED_ORDER);
+        // 将订单添加到redis中
+        redis.set(String.valueOf(order.getOrderNumber()), order, 1000 * 60);
         // 将订单推送到队列中
         redis.publish(order);
-        // 将订单添加到redis中
-        redis.set(String.valueOf(order.getOrderNumber()), order);
         return order;
     }
 

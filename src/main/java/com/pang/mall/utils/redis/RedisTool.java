@@ -64,7 +64,7 @@ public class RedisTool {
      */
     public boolean set(String key, Object value, long time) {
         try {
-            redisValue.set(key, value, time);
+            redisValue.set(key, value, time, TimeUnit.MILLISECONDS);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -359,5 +359,24 @@ public class RedisTool {
      */
     public void publish(Object message) {
         redisTemplate.convertAndSend(channelName, message);
+    }
+
+    /**
+     * 如果不存在则添加
+     *
+     * @param key     键
+     * @param value   值
+     * @param outTime 超时时间
+     */
+    public boolean setIfAbsent(String key, long value, long outTime) {
+        return redisValue.setIfAbsent(key, value, outTime, TimeUnit.MILLISECONDS);
+    }
+
+    public Object getAndSet(String key, long value) {
+        return redisValue.getAndSet(key, value);
+    }
+
+    public boolean deleteKey(String key) {
+        return redisValue.getOperations().delete(key);
     }
 }

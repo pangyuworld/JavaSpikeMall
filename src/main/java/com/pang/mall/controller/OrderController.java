@@ -19,23 +19,23 @@ import java.util.Map;
  * @date 2019/11/12 13:29
  */
 @RestController
-@RequestMapping(value = "/order")
+@RequestMapping(value = "/api/order")
 public class OrderController {
     @Autowired
     private OrderService orderService;
 
     @Token
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    public ResponseJSON<Order> addOrder(@RequestBody Order order, @RequestAttribute String buyer){
-        Long buyerId=Long.parseLong(buyer);
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseJSON<Order> addOrder(@RequestBody Order order, @RequestAttribute String buyer) {
+        Long buyerId = Long.parseLong(buyer);
         order.setBuyerId(buyerId);
         return new ResponseJSON<>(orderService.addOrder(order), ResponseEnum.SUCCESS_OPTION);
     }
 
-    @RequestMapping(value = "/status",method = RequestMethod.GET)
-    public ResponseJSON<Order> getOrderByOrderNumber(@RequestBody Map<String,Long> map){
-        Long orderNumber=map.get("orderNumber");
-        return new ResponseJSON<>(orderService.getOrderStatus(orderNumber),ResponseEnum.SUCCESS_OPTION);
+    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    public ResponseJSON<Order> getOrderByOrderNumber(@RequestBody Map<String, Long> map) {
+        Long orderNumber = map.get("orderNumber");
+        return new ResponseJSON<>(orderService.getOrderStatus(orderNumber), ResponseEnum.SUCCESS_OPTION);
     }
 
 }

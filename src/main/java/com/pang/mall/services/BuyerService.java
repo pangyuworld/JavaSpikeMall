@@ -6,11 +6,11 @@ import com.pang.mall.config.TokenConfig;
 import com.pang.mall.entity.Buyer;
 import com.pang.mall.mapper.BuyerMapper;
 import com.pang.mall.utils.check.ParameterTool;
+import com.pang.mall.utils.redis.RedisTool;
 import com.pang.mall.utils.token.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +27,8 @@ import java.util.Map;
 public class BuyerService {
     @Autowired
     private BuyerMapper buyerMapper;
+    @Autowired
+    private RedisTool redis;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     private final String SUBJECT = "buyer";
@@ -92,6 +94,8 @@ public class BuyerService {
         buyer.setPassword("");
         // 生成token
         String token = TokenUtil.createJWT(buyer.getBuyerId(), TokenConfig.TOKEN_TTL, SUBJECT);
+        // 以token为键值，将用户信息保存到redis中，过期时间和token一致
+        redis.set(token, buyer, TokenConfig.TOKEN_TTL);
         // 组件返回map
         Map<String, Object> result = new HashMap<>();
         result.put("buyerInfo", buyer);
