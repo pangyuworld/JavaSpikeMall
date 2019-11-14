@@ -3,9 +3,7 @@
     <Properties>
         <!--  输出路径  -->
         <Property name="logpath">./logs</Property>
-        <Property name="pattern">[%-d{yyyy-MM-dd HH:mm:ss.SSS}] %highlight{%-5p} %highlight{%C %highlight{%M}(%L)} %t
-            %highlight{:} %m %n
-        </Property>
+        <Property name="pattern">[%-d{yyyy-MM-dd HH:mm:ss.SSS}] %highlight{%-5p} %highlight{%C %highlight{%M}(%L)} %t %highlight{:} %m %n</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">

@@ -6,10 +6,12 @@
         <result column="item_name" property="itemName" jdbcType="VARCHAR"/>
         <result column="item_count" property="itemCount" jdbcType="INTEGER"/>
         <result column="seller_id" property="sellerId" jdbcType="INTEGER"/>
+        <result column="item_price" property="itemPrice" jdbcType="DOUBLE"/>
+        <result column="item_img" property="itemImg" jdbcType="VARCHAR"/>
     </resultMap>
     <insert id="addItem" parameterType="com.pang.mall.entity.Item">
-        insert into t_item(item_name, item_count,seller_id)
-        values (#{itemName},#{itemCount},#{sellerId})
+        insert into t_item(item_name, item_count,seller_id,item_price,item_img)
+        values (#{itemName},#{itemCount},#{sellerId},#{itemPrice},#{itemImg})
     </insert>
     <update id="reduceItemCount">
         update t_item set item_count = IF(item_count &lt; 1, 0, item_count -1) where item_id=#{itemId}
@@ -19,13 +21,13 @@
     </select>
     <select id="selectItemById" resultMap="BaseResultMap">
         select
-            item_id, item_name, item_count, seller_id
+            item_id, item_name, item_count, seller_id,item_img,item_price
         from t_item
         where item_id=#{itemId}
     </select>
     <select id="selectAllItem" resultMap="BaseResultMap">
         select
-            item_id, item_name, item_count, seller_id
+            item_id, item_name, item_count, seller_id,item_img,item_price
         from t_item
     </select>
     <update id="updateItem" parameterType="com.pang.mall.entity.Item">
@@ -33,7 +35,9 @@
         <set>
             item_count=#{itemCount},
             item_name=#{itemName},
-            seller_id=#{sellerId}
+            seller_id=#{sellerId},
+            item_img=#{itemImg},
+            item_price=#{itemPrice}
         </set>
         where item_id=#{itemId}
     </update>

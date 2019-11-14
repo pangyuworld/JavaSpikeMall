@@ -2,6 +2,7 @@ package com.pang.mall.utils.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.pang.mall.common.exception.TokenTimeOutException;
 import com.pang.mall.common.exception.UserActionException;
@@ -64,7 +65,12 @@ public class TokenUtil {
         if (token == null) {
             throw new UserActionException("无认证信息", ResponseEnum.NOT_LOGIN);
         }
-        DecodedJWT decode = JWT.decode(token);
+        DecodedJWT decode = null;
+        try {
+            decode = JWT.decode(token);
+        } catch (JWTDecodeException e) {
+            throw e;
+        }
         long expiresDate = decode.getExpiresAt().getTime();
         if (expiresDate < System.currentTimeMillis()) {
             throw new TokenTimeOutException(token);
