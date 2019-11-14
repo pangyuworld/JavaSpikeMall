@@ -196,7 +196,7 @@ public class RedisTool {
      * @param key   键
      * @param value 值
      */
-    public boolean setHash(String key, Map<String, Object> value) {
+    public boolean setHash(String key, Map<Object, Object> value) {
         try {
             redisHash.putAll(key, value);
             return true;
@@ -213,7 +213,7 @@ public class RedisTool {
      * @param item  hash键
      * @param value hash值
      */
-    public boolean setHash(String key, String item, Object value) {
+    public boolean setHash(String key, Object item, Object value) {
         try {
             redisHash.put(key, item, value);
             return true;
@@ -230,7 +230,7 @@ public class RedisTool {
      * @param value 值
      * @param time  有效时间
      */
-    public boolean setHash(String key, Map<String, Object> value, long time) {
+    public boolean setHash(String key, Map<Object, Object> value, long time) {
         try {
             redisHash.putAll(key, value);
             if (time > 0) {
@@ -251,7 +251,7 @@ public class RedisTool {
      * @param value hash值
      * @param time  有效时间
      */
-    public boolean setHash(String key, String item, Object value, long time) {
+    public boolean setHash(String key, Object item, Object value, long time) {
         try {
             redisHash.put(key, item, value);
             if (time > 0) {
@@ -271,7 +271,7 @@ public class RedisTool {
      * @param item hash键
      * @return hash值
      */
-    public Object get(String key, String item) {
+    public Object get(String key, Object item) {
         return redisHash.get(key, item);
     }
 
@@ -291,7 +291,7 @@ public class RedisTool {
      * @param key   键
      * @param items hash键
      */
-    public boolean removeHash(String key, String... items) {
+    public boolean removeHash(String key, Object... items) {
         redisHash.delete(key, items);
         return true;
     }
@@ -302,7 +302,7 @@ public class RedisTool {
      * @param key  键
      * @param item hash键
      */
-    public boolean containsKey(String key, String item) {
+    public boolean containsKey(String key, Object item) {
         return redisHash.hasKey(key, item);
     }
 
@@ -314,7 +314,7 @@ public class RedisTool {
      * @param delta 递增因子
      * @return 递增后的值
      */
-    public long increment(String key, String item, long delta) {
+    public long increment(String key, Object item, long delta) {
         return redisHash.increment(key, item, delta);
     }
 
@@ -325,7 +325,7 @@ public class RedisTool {
      * @param item hash键
      * @return 递增后的值
      */
-    public long increment(String key, String item) {
+    public long increment(String key, Object item) {
         return increment(key, item, 1);
     }
 
@@ -337,7 +337,7 @@ public class RedisTool {
      * @param delta 递减因子
      * @return 递减后的值
      */
-    public long decrement(String key, String item, long delta) {
+    public long decrement(String key, Object item, long delta) {
         return redisHash.increment(key, item, -delta);
     }
 
@@ -348,7 +348,7 @@ public class RedisTool {
      * @param item hash键
      * @return 递减后的值
      */
-    public long decrement(String key, String item) {
+    public long decrement(String key, Object item) {
         return decrement(key, item, 1);
     }
 

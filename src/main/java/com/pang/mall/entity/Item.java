@@ -3,6 +3,7 @@ package com.pang.mall.entity;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import java.util.StringJoiner;
 
 /**
  * @author pang
@@ -63,11 +64,11 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "itemId=" + itemId +
-                ", itemName='" + itemName + '\'' +
-                ", itemCount=" + itemCount +
-                ", sellerId=" + sellerId +
-                '}';
+        return new StringJoiner(", ", Item.class.getSimpleName() + "[", "]")
+                .add("itemId=" + itemId)
+                .add("itemName='" + itemName + "'")
+                .add("itemCount=" + itemCount)
+                .add("sellerId=" + sellerId)
+                .toString();
     }
 }

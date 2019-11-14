@@ -86,4 +86,14 @@ public class RedisTest {
         System.out.println(end - start);
         // result=80
     }
+
+    @Test
+    public void serializationTest() {
+        Buyer buyer = new Buyer();
+        buyer.setBuyerName("买家姓名");
+        buyer.setUserName("登录名");
+        buyer.setBuyerId(1);
+        redisTool.set("user", buyer);
+        System.out.println(redisTool.get("user") instanceof Buyer);
+    }
 }

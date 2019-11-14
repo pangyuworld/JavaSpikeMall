@@ -4,6 +4,8 @@ import com.pang.mall.common.exception.UserActionException;
 import com.pang.mall.common.restful.ResponseEnum;
 import com.pang.mall.entity.Item;
 import com.pang.mall.mapper.ItemMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
  */
 @Service
 public class ItemService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ItemService.class);
+
     @Autowired
     private ItemMapper itemMapper;
 
@@ -29,11 +33,14 @@ public class ItemService {
      */
     public boolean addItem(Item item) {
         if ((item.getSellerId() <= 0)) {
+            LOGGER.info("无认证信息或认证信息不正确,item={}", item);
             throw new UserActionException("无认证信息或认证信息不正确", ResponseEnum.NOT_LOGIN);
         }
         if (itemMapper.addItem(item) > 0) {
+            LOGGER.debug("添加商品成功，item={}", item);
             return true;
         } else {
+            LOGGER.debug("添加商品失败");
             return false;
         }
     }
@@ -44,6 +51,7 @@ public class ItemService {
      * @return 商品信息列表
      */
     public List<Item> getAllItem() {
+        LOGGER.debug("获得所有商品信息");
         return itemMapper.selectAllItem();
     }
 
@@ -54,6 +62,7 @@ public class ItemService {
      * @return 商品信息
      */
     public Item getItemById(long itemId) {
+        LOGGER.debug("获得指定ID的商品信息,itemId={}", itemId);
         return itemMapper.selectItemById(itemId);
     }
 
@@ -63,9 +72,12 @@ public class ItemService {
      * @param itemId 要减少库存的商品ID
      */
     public boolean decreaseStock(long itemId) {
+        LOGGER.info("减少商品库存，itemId={}", itemId);
         if (itemMapper.reduceItemCount(itemId) > 0) {
+            LOGGER.debug("减少商品库存成功");
             return true;
         }
+        LOGGER.debug("减少商品库存失败");
         return false;
     }
 
@@ -76,6 +88,8 @@ public class ItemService {
      * @return 商品库存
      */
     public int getCount(long itemId) {
-        return itemMapper.getCount(itemId);
+        int count = itemMapper.getCount(itemId);
+        LOGGER.debug("获取商品库存,itemId={},count{}", itemId, count);
+        return count;
     }
 }

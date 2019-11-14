@@ -1,6 +1,7 @@
 package com.pang.mall.entity;
 
 import javax.validation.constraints.Pattern;
+import java.util.StringJoiner;
 
 /**
  * @author pang
@@ -61,9 +62,11 @@ public class Seller {
 
     @Override
     public String toString() {
-        return "Seller{" +
-                "sellerId=" + sellerId +
-                ", sellerName='" + sellerName + '\'' +
-                '}';
+        return new StringJoiner(", ", Seller.class.getSimpleName() + "[", "]")
+                .add("sellerId=" + sellerId)
+                .add("sellerName='" + sellerName + "'")
+                .add("userName='" + userName + "'")
+                .add("password='" + password + "'")
+                .toString();
     }
 }

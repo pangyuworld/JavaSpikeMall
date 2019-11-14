@@ -5,6 +5,8 @@ import com.pang.mall.entity.OrderStatus;
 import com.pang.mall.mapper.OrderMapper;
 import com.pang.mall.utils.id.SnowFlake;
 import com.pang.mall.utils.redis.RedisTool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.Date;
  */
 @Service
 public class OrderService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Order.class);
     @Autowired
     private ItemService itemService;
     @Autowired
@@ -45,8 +48,10 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.CREATED_ORDER);
         // 将订单添加到redis中
         redis.set(String.valueOf(order.getOrderNumber()), order, 1000 * 60);
+        LOGGER.info("订单加入到redis中,order={}", order);
         // 将订单推送到队列中
         redis.publish(order);
+        LOGGER.info("订单推送到队列中,order={}", order);
         return order;
     }
 
@@ -57,6 +62,7 @@ public class OrderService {
      * @return 订单信息
      */
     public Order getOrderStatus(long orderNumber) {
+        LOGGER.info("根据订单号查订单状态,orderNumber={}", orderNumber);
         Order order = (Order) redis.get(String.valueOf(orderNumber));
         if (order != null) {
             // 如果订单存在
@@ -66,15 +72,18 @@ public class OrderService {
                 redis.removeKey(String.valueOf(order.getOrderNumber()));
                 // 设置订单状态为关闭
                 order.setOrderStatus(OrderStatus.CLOSE_ORDER);
+                LOGGER.info("订单存在且被关闭，order={}", order);
                 // 然后返回该订单
                 return order;
             }
             // 如果订单属于其他情况，则直接返回订单
             // 这里正常情况不会出现订单是CLOSE_ORDER状态的
+            LOGGER.info("查询到订单,order={}", order);
             return order;
         }
         // 订单如果不存在，那就是已经写入数据库了，直接从数据库查询
         order = orderMapper.selectOrderByOrderNumber(orderNumber);
+        LOGGER.info("从数据库中获取到订单信息,order={}", order);
         return order;
 
     }
@@ -86,8 +95,10 @@ public class OrderService {
      */
     public boolean addOrderIntoDataBase(Order order) {
         if (orderMapper.addOrder(order) > 0) {
+            LOGGER.info("向数据库插入数据成功,order={}", order);
             return true;
         }
+        LOGGER.info("向数据库插入数据失败,order={}", order);
         return false;
     }
 }

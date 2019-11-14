@@ -60,14 +60,14 @@ public class TokenUtil {
      * @return 包含token认证信息的对象
      * @throws TokenTimeOutException 当token过期时候，抛出该异常
      */
-    public static DecodedJWT parseJWT(String token) {
+    public static DecodedJWT parseJWT(String token) throws TokenTimeOutException {
         if (token == null) {
             throw new UserActionException("无认证信息", ResponseEnum.NOT_LOGIN);
         }
         DecodedJWT decode = JWT.decode(token);
         long expiresDate = decode.getExpiresAt().getTime();
         if (expiresDate < System.currentTimeMillis()) {
-            throw new TokenTimeOutException();
+            throw new TokenTimeOutException(token);
         }
         return decode;
     }

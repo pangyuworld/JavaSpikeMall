@@ -9,11 +9,18 @@ package com.pang.mall.common.exception;
  * @date 2019/11/11 11:46
  */
 public class TokenTimeOutException extends RuntimeException {
-    public TokenTimeOutException() {
-        this("token过期，请重新登录");
+    private String token;
+
+    public TokenTimeOutException(String token) {
+        this("token过期，请重新登录", token);
     }
 
-    public TokenTimeOutException(String message) {
+    public TokenTimeOutException(String message, String token) {
         super(message);
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 }
