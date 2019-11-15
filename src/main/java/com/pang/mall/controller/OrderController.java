@@ -8,8 +8,6 @@ import com.pang.mall.utils.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 /**
  * @author pang
  * @version V1.0
@@ -33,8 +31,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public ResponseJSON<Order> getOrderByOrderNumber(@RequestBody Map<String, Long> map) {
-        Long orderNumber = map.get("orderNumber");
+    public ResponseJSON<Order> getOrderByOrderNumber(Long orderNumber) {
         return new ResponseJSON<>(orderService.getOrderStatus(orderNumber), ResponseEnum.SUCCESS_OPTION);
     }
 
