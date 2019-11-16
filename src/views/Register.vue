@@ -1,7 +1,9 @@
 <template>
-  <div>{{pathType}}
-      <Register :pathType="pathType"/>
-  </div>
+  <Row type="flex" align="middle" justify="center" class-name="my-form">
+    <Col span="6">
+      <Register :pathType="pathType" />
+    </Col>
+  </Row>
 </template>
 
 <script>
@@ -22,7 +24,6 @@ export default {
       // 获取路径的属性
       var pathType = pathTypeArray[1];
       if (pathType == "seller" || pathType == "buyer") this.pathType = pathType;
-      console.log(pathType)
     }
   },
   mounted() {
@@ -37,5 +38,8 @@ export default {
 };
 </script>
 
-<style>
+<style scope>
+.my-form {
+  margin-top: 150px;
+}
 </style>

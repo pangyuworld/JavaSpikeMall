@@ -19,7 +19,7 @@ export const set = (c_name, value, expiredays) => {
 export const del = name => {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
-    var cval = getCookie(name);
+    var cval = get(name);
     if (cval != null)
         document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 };

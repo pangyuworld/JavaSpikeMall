@@ -2,13 +2,13 @@
   <div>
     <!-- logo -->
     <div class="logo"></div>
-    <Menu theme="dark" mode="horizontal" active-name="home">
+    <Menu theme="dark" mode="horizontal" active-name="home" @on-select="select">
       <!-- 主页按钮 -->
       <MenuItem name="home" to="/">
         <Icon type="ios-home-outline" />主页
       </MenuItem>
       <!-- 买家 -->
-      <Submenu name="buyer">
+      <Submenu name="buyer" v-if="!loginType">
         <span slot="title">
           <Icon type="md-paw" />
           <span>我是客户</span>
@@ -25,7 +25,7 @@
         </MenuItem>
       </Submenu>
       <!-- 卖家 -->
-      <Submenu name="seller">
+      <Submenu name="seller" v-if="!loginType">
         <span slot="title">
           <Icon type="ios-calculator" />
           <span>我是商家</span>
@@ -41,12 +41,42 @@
           <Icon type="md-person-add" />
         </MenuItem>
       </Submenu>
+      <MenuItem name="userName" v-if="loginType">
+        <Icon type="ios-paper" />用户名
+      </MenuItem>
+      <MenuItem name="signOut" @click="signOut" v-if="loginType">
+        <Icon type="ios-paper" />注销
+      </MenuItem>
     </Menu>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    loginType: null
+  },
+  mounted() {
+    console.log(this.$cookie.get("userName"));
+  },
+  methods: {
+    signOut() {
+      this.$cookie.del("loginType");
+      // this.loginType=null;
+      console.log(this.$parent);
+      // TODO: 迫使APP组件重新刷新，即重新获取loginType状态
+      this.$root.updateStatus()
+      this.$Message.success("注销成功");
+    },
+    select(e) {
+      switch (e) {
+        case "signOut":
+          this.signOut();
+          break;
+      }
+    }
+  }
+};
 </script>
 
 <style>

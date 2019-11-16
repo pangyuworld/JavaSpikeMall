@@ -1,17 +1,16 @@
 import axios from 'axios';
 import qs from "qs"
+import * as cookie from "./cookieTool"
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.baseURL = "/api"
-axios.interceptors.request.use((config) => {
-    if (['/buyer/login'].indexOf(config.url) === -1 || ['/seller/login'].indexOf(config.url) === -1) {
-        const token = localStorage.getItem('token')
-        if (token) {
-            config.headers.Authorization = token
-        }
-    }
-    return config
-});
+    // axios.interceptors.request.use((config) => {
+    //     const token = cookie.get('token')
+    //     if (token) {
+    //         config.headers.Authorization = token
+    //     }
+    //     return config
+    // });
 
 // 卖家登录
 export const sellerLogin = params => {
@@ -29,7 +28,7 @@ export const sellerRegister = params => {
 
 // 买家注册
 export const buyerRegister = params => {
-    return axios.post("/buyer/register", params).then(res => res.data)
+    return axios.post("/buyer/register", params).then(res => res.data).catch(err => err)
 }
 
 // 添加商品
