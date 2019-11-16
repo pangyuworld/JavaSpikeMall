@@ -14,8 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,8 +47,14 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
             return super.preHandle(request, response, handler);
         }
         // 如果存在token注解，则需要认证
-        // 从认证中取出token字符串
-        String tokenStr = request.getHeader("Authorization");
+        // 从Cookie中取出token
+        Cookie[] cookies=request.getCookies();
+        Map<String,String> cookieMap=new HashMap<>();
+        for (Cookie cookie : cookies) {
+            cookieMap.put(cookie.getName(),cookie.getValue());
+        }
+        LOGGER.debug("将cookie保存为一个map,CookieMap={}",cookieMap);
+        String tokenStr = cookieMap.get("token");
         LOGGER.debug("拦截到的请求方法上包含token，进行验证,token={}", tokenStr);
         if (tokenStr.isEmpty()) {
             LOGGER.debug("无认证信息,requestPath={}", request.getRequestURI());

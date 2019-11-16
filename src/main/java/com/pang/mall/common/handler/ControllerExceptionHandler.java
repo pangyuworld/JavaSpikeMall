@@ -2,6 +2,7 @@ package com.pang.mall.common.handler;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.pang.mall.common.exception.TokenTimeOutException;
+import com.pang.mall.common.exception.UserActionException;
 import com.pang.mall.common.restful.ResponseEnum;
 import com.pang.mall.common.restful.ResponseJSON;
 import org.slf4j.Logger;
@@ -37,5 +38,19 @@ public class ControllerExceptionHandler {
     public ResponseJSON tokenDecodeHandler(JWTDecodeException e){
         LOGGER.info("token解析出错",e);
         return new ResponseJSON(ResponseEnum.NOT_LOGIN);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = NullPointerException.class)
+    public ResponseJSON nullPointHandler(NullPointerException e){
+        LOGGER.warn("输入了空的参数",e);
+        return new ResponseJSON(ResponseEnum.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(value = UserActionException.class)
+    public ResponseJSON userActionHandler(UserActionException e){
+        LOGGER.warn(e.getMessage(),e);
+        return new ResponseJSON(e.getExceptionType());
     }
 }
