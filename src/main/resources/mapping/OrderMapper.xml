@@ -8,26 +8,27 @@
         <result column="order_number" property="orderNumber" jdbcType="INTEGER"/>
         <result column="item_id" property="itemId" jdbcType="INTEGER"/>
         <result column="buyer_id" property="buyerId" jdbcType="VARCHAR"/>
+        <result column="order_count" property="orderCount" jdbcType="VARCHAR"/>
     </resultMap>
     <insert id="addOrder" parameterType="com.pang.mall.entity.Order">
-        insert into t_order( order_time, item_id, buyer_id, order_status, order_number)
-        values (#{orderTime},#{itemId},#{buyerId},#{orderStatus},#{orderNumber})
+        insert into t_order( order_time, item_id, buyer_id, order_status, order_number,order_count)
+        values (#{orderTime},#{itemId},#{buyerId},#{orderStatus},#{orderNumber},#{orderCount})
     </insert>
     <select id="selectOrderById" resultMap="BaseResultMap">
         select
-        order_id, order_time, item_id, buyer_id, order_status, order_number
+        order_id, order_time, item_id, buyer_id, order_status, order_number,order_count
         from t_order
         where order_id=#{orderId}
     </select>
     <select id="selectOrderByOrderNumber" resultMap="BaseResultMap">
         select
-        order_id, order_time, item_id, buyer_id, order_status, order_number
+        order_id, order_time, item_id, buyer_id, order_status, order_number,order_count
         from t_order
         where order_number=#{orderNumber}
     </select>
     <select id="selectAllOrder" resultMap="BaseResultMap">
         select
-        order_id, order_time, item_id, buyer_id, order_status, order_number
+        order_id, order_time, item_id, buyer_id, order_status, order_number,order_count
         from t_order
     </select>
     <update id="updateOrder" parameterType="com.pang.mall.entity.Order">

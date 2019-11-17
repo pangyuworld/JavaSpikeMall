@@ -67,13 +67,14 @@ public class ItemService {
     }
 
     /**
-     * 减少一个库存
+     * 减少N个库存
      *
      * @param itemId 要减少库存的商品ID
+     * @param count 要减少的数量
      */
-    public boolean decreaseStock(long itemId) {
-        LOGGER.info("减少商品库存，itemId={}", itemId);
-        if (itemMapper.reduceItemCount(itemId) > 0) {
+    public boolean decreaseStock(long itemId,int count) {
+        LOGGER.info("减少商品库存，itemId={},count={}", itemId,count);
+        if (itemMapper.reduceItemCount(itemId,count) > 0) {
             LOGGER.debug("减少商品库存成功");
             return true;
         }

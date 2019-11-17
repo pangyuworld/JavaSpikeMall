@@ -48,6 +48,11 @@ public class RedisListener implements MessageListener {
      */
     @Override
     public void onMessage(Message message, byte[] bytes) {
+        try {
+            Thread.sleep(1000*5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LOGGER.debug("监听到消息,channel={}", new String(message.getChannel()));
         long outTime = 1000;
         long value = 0;
@@ -57,14 +62,6 @@ public class RedisListener implements MessageListener {
             value = outTime + System.currentTimeMillis();
             mLock = lock.lock(value, outTime);
         }
-        // if (!lock.lock(value, outTime)) {
-        //     //TODO 如果没有持有锁，如何保证数据不会缺失呢？我这里采用的是将消息通信推送到消息队列中去
-        //     //TODO 但是这种方式无法解决先到先得的业务，或许实现一个优先队列？
-        //     // redis.publish(serializer.deserialize(message.getBody(), Order.class));
-        //     // throw new RuntimeException("错误");
-        //     LOGGER.debug("未持有锁，channel={}", new String(message.getChannel()));
-        //     return;
-        // }
         LOGGER.debug("持有锁,channel={}", new String(message.getChannel()));
         // 从消息队列中取出订单
         Order order = serializer.deserialize(message.getBody(), Order.class);
@@ -84,12 +81,13 @@ public class RedisListener implements MessageListener {
         }
         LOGGER.debug("获取产品库存,itemCount={}", count);
         // 这个时候已经有库存了
-        if (count > 0) {
+        // 如果库存大于要购买的数量
+        if (count > order.getOrderCount()) {
             LOGGER.debug("有库存，订单正常受理，order={}", order);
             // 如果有库存，那订单就可以正常处理
-            redis.decrement(itemCountName + order.getItemId());
+            redis.decrement(itemCountName + order.getItemId(),order.getOrderCount());
             orderService.addOrderIntoDataBase(order);
-            itemService.decreaseStock(order.getItemId());
+            itemService.decreaseStock(order.getItemId(),order.getOrderCount());
             order.setOrderStatus(OrderStatus.PROCESS_SUCCESS);
             redis.set(String.valueOf(order.getOrderNumber()), order);
             LOGGER.debug("订单处理完毕，并更新到redis,order={}", order);
@@ -98,10 +96,10 @@ public class RedisListener implements MessageListener {
             // 订单因为缺货然后就关闭订单
             order.setOrderStatus(OrderStatus.CLOSE_CAUSE_SOLD_OUT);
             redis.set(String.valueOf(order.getOrderNumber()), order);
-            LOGGER.debug("订单因为没有库存而关闭,order={}", order);
+            LOGGER.debug("订单因为没有库存而关闭,count={},order={}",count, order);
         }
         // TODO 这里是测试的尝试性语句，应该在编写好客户端以后注释掉该语句
-        redis.removeKey("" + order.getOrderNumber());
+        // redis.removeKey("" + order.getOrderNumber());
         LOGGER.debug("解锁，channel={},value-{}", new String(message.getChannel()), value);
         // 解锁
         lock.unlock(value);

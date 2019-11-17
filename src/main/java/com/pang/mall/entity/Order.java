@@ -28,6 +28,30 @@ public class Order {
     private int orderStatus;
     /** 订单号，根据雪花算法生成 */
     private long orderNumber;
+    /** 购买数量 */
+    private int orderCount;
+
+    public int getOrderCount() {
+        return orderCount;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Order.class.getSimpleName() + "[", "]")
+                .add("orderId=" + orderId)
+                .add("orderTime=" + orderTime)
+                .add("itemId=" + itemId)
+                .add("buyerId=" + buyerId)
+                .add("orderStatus=" + orderStatus)
+                .add("orderNumber=" + orderNumber)
+                .add("orderCount=" + orderCount)
+                .toString();
+    }
+
+    public Order setOrderCount(int orderCount) {
+        this.orderCount = orderCount;
+        return this;
+    }
 
     public long getOrderNumber() {
         return orderNumber;
@@ -83,15 +107,4 @@ public class Order {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Order.class.getSimpleName() + "[", "]")
-                .add("orderId=" + orderId)
-                .add("orderTime=" + orderTime)
-                .add("itemId=" + itemId)
-                .add("buyerId=" + buyerId)
-                .add("orderStatus=" + orderStatus)
-                .add("orderNumber=" + orderNumber)
-                .toString();
-    }
 }

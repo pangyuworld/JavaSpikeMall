@@ -23,7 +23,7 @@ public interface ItemMapper {
      * @param itemId 商品id
      * @return 执行成功返回1
      */
-    int reduceItemCount(long itemId);
+    int reduceItemCount(long itemId,int count);
 
     /**
      * 获得商品库存

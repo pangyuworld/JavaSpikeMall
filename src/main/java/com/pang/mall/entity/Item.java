@@ -1,5 +1,8 @@
 package com.pang.mall.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.pang.mall.common.serializer.CustomerDoubleSerialize;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
@@ -24,11 +27,35 @@ public class Item {
     @Min(value = 0, message = "商品库存不得低于0")
     private int itemCount;
     /** 商品价钱 */
+    @JsonSerialize(using = CustomerDoubleSerialize.class)
     private double itemPrice;
     /** 商品图片 */
     private String itemImg;
     /** 商品所属商家的ID */
     private long sellerId;
+    private String itemInfo;
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Item.class.getSimpleName() + "[", "]")
+                .add("itemId=" + itemId)
+                .add("itemName='" + itemName + "'")
+                .add("itemCount=" + itemCount)
+                .add("itemPrice=" + itemPrice)
+                .add("itemImg='" + itemImg + "'")
+                .add("sellerId=" + sellerId)
+                .add("itemInfo='" + itemInfo + "'")
+                .toString();
+    }
+
+    public String getItemInfo() {
+        return itemInfo;
+    }
+
+    public Item setItemInfo(String itemInfo) {
+        this.itemInfo = itemInfo;
+        return this;
+    }
 
     public long getItemId() {
         return itemId;
@@ -68,18 +95,6 @@ public class Item {
 
     public double getItemPrice() {
         return itemPrice;
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Item.class.getSimpleName() + "[", "]")
-                .add("itemId=" + itemId)
-                .add("itemName='" + itemName + "'")
-                .add("itemCount=" + itemCount)
-                .add("itemPrice=" + itemPrice)
-                .add("itemImg='" + itemImg + "'")
-                .add("sellerId=" + sellerId)
-                .toString();
     }
 
     public Item setItemPrice(double itemPrice) {
