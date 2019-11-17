@@ -1,0 +1,45 @@
+<template>
+  <Card :to="'/item/'+item.itemId" >
+    <div slot="title">
+      <img
+        style="width:100%"
+        :src="item.itemImg"
+      />
+    </div>
+    <div>
+      <p class="price">￥{{item.itemPrice}}</p>
+      <h4><strong>{{item.itemName}}</strong></h4>
+      <p class="itemInfo">{{item.itemInfo}}</p>
+      <span class="itemCount">剩余库存：{{item.itemCount>1000?'1000+':item.itemCount}}</span>
+    </div>
+  </Card>
+</template>
+
+<script>
+export default {
+  props: {
+    item: {
+      itemId: 0,
+      itemName: "",
+      itemCount: 0,
+      itemPrice: 0,
+      itemImg: "",
+      sellerId: 0,
+      itemInfo: ""
+    }
+  }
+};
+</script>
+
+<style scope>
+.price {
+  color: #e4393c;
+  font-size: 20px;
+}
+.itemInfo {
+  color: #657180;
+}
+.itemCount {
+  color: #9ea7b4;
+}
+</style>

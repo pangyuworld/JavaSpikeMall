@@ -42,7 +42,7 @@ export const getItemById = params => {
 }
 
 // 获取商品列表
-export const getItems = params => {
+export const getItemList = params => {
     return axios.get("/item").then(res => res.data)
 }
 
@@ -54,8 +54,7 @@ export const addOrder = params => {
 // 获取订单状态
 export const getOrderStatus = params => {
     return axios({
-        url: "/order/status",
-        method: "get",
-        params: params
-    }).then(res => res)
+        url: "/order/status?orderNumber=" + params,
+        method: "get"
+    }).then(res => res.data)
 }

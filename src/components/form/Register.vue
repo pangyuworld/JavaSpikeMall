@@ -54,7 +54,7 @@ export default {
           },
           {
             pattern: "^\\w{6,20}$",
-            message: "用户名不符合规则（6-20位字母、数字、下划线）"
+            message: "6-20位字母、数字、下划线"
           }
         ],
         password: [
@@ -64,7 +64,7 @@ export default {
           },
           {
             pattern: "^\\w{6,20}$",
-            message: "密码不符合规则（6-20位字母、数字、下划线）"
+            message: "6-20位字母、数字、下划线"
           }
         ],
         rePassword: [

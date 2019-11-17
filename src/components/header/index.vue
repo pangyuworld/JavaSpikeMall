@@ -42,7 +42,9 @@
         </MenuItem>
       </Submenu>
       <MenuItem name="userName" v-if="loginType">
-        <Icon type="ios-paper" />用户名
+        <Icon type="md-paw" v-if="loginType=='buyer'" />
+        <Icon type="ios-calculator" v-if="loginType=='seller'" />
+        {{userName}}
       </MenuItem>
       <MenuItem name="signOut" @click="signOut" v-if="loginType">
         <Icon type="ios-paper" />注销
@@ -53,6 +55,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      userName: null
+    };
+  },
   props: {
     loginType: null
   },
@@ -62,10 +69,7 @@ export default {
   methods: {
     signOut() {
       this.$cookie.del("loginType");
-      // this.loginType=null;
-      console.log(this.$parent);
-      // TODO: 迫使APP组件重新刷新，即重新获取loginType状态
-      this.$root.updateStatus()
+      this.$parent.$parent.$parent.updateStatus();
       this.$Message.success("注销成功");
     },
     select(e) {
@@ -74,6 +78,11 @@ export default {
           this.signOut();
           break;
       }
+    }
+  },
+  watch: {
+    loginType() {
+      this.userName = this.$cookie.get("userName");
     }
   }
 };

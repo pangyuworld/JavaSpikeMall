@@ -34,7 +34,7 @@ export default {
           },
           {
             pattern: "^\\w{6,20}$",
-            message: "用户名不符合规则（6-20位字母、数字、下划线）"
+            message: "6-20位字母、数字、下划线"
           }
         ],
         password: [
@@ -44,7 +44,7 @@ export default {
           },
           {
             pattern: "^\\w{6,20}$",
-            message: "密码不符合规则（6-20位字母、数字、下划线）"
+            message: "6-20位字母、数字、下划线"
           }
         ]
       }
@@ -87,6 +87,9 @@ export default {
                 path: "/"
               });
             }, 1500);
+          }else {
+            // 注册没有成功，弹出提示信息
+            this.$Message.error(res.response.data.message);
           }
         });
       } else if (this.pathType == "seller") {
@@ -104,6 +107,9 @@ export default {
                 path: "/"
               });
             }, 1500);
+          }else {
+            // 注册没有成功，弹出提示信息
+            this.$Message.error(res.response.data.message);
           }
         });
       }

@@ -1,6 +1,6 @@
 <template>
   <Row type="flex" align="middle" justify="center" class-name="my-form">
-    <Col span="6">
+    <Col span="5">
       <Register :pathType="pathType" />
     </Col>
   </Row>

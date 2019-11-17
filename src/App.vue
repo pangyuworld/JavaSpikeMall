@@ -14,6 +14,7 @@
 <script>
 import myHeader from "@/components/header/index";
 export default {
+  name:"app",
   data() {
     return {
       loginType: null
@@ -30,7 +31,6 @@ export default {
   },
   methods: {
     updateStatus() {
-      console.log("561651")
       this.loginType = this.$cookie.get("loginType");
     }
   }
@@ -41,10 +41,13 @@ body {
   background-color: #f5f7f9 !important;
   background-size: 100% 100%;
 }
+#app{
+  padding-bottom:100px;
+}
 </style>
 <style scoped>
 .my-fotter {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   text-align: center;
   width: 100%;
