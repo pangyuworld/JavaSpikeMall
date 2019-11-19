@@ -38,6 +38,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
         LOGGER.debug("拦截到请求,requestPath={}", request.getRequestURI());
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Token token = handlerMethod.getMethodAnnotation(Token.class);
@@ -56,7 +57,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
         LOGGER.debug("将cookie保存为一个map,CookieMap={}",cookieMap);
         String tokenStr = cookieMap.get("token");
         LOGGER.debug("拦截到的请求方法上包含token，进行验证,token={}", tokenStr);
-        if (tokenStr.isEmpty()) {
+        if (tokenStr==null||tokenStr.isEmpty()) {
             LOGGER.debug("无认证信息,requestPath={}", request.getRequestURI());
             throw new UserActionException("无认证信息", ResponseEnum.NOT_LOGIN);
         }

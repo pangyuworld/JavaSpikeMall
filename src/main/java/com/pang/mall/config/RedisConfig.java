@@ -14,6 +14,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * @author pang
@@ -32,6 +33,8 @@ public class RedisConfig {
 
     @Autowired
     private RedisListener redisListener;
+    @Autowired
+    private ThreadPoolTaskExecutor executor;
 
     @Bean
     public RedisMessageListenerContainer container(RedisConnectionFactory factory) {
@@ -41,6 +44,8 @@ public class RedisConfig {
         // 订阅通道
         container.addMessageListener(redisListener, new PatternTopic(channelName));
         LOGGER.debug("redis订阅监听器注册完毕");
+        // 设置线程池
+        // container.setTaskExecutor(executor);
         return container;
     }
 

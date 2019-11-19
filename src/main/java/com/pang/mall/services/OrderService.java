@@ -49,11 +49,6 @@ public class OrderService {
         // 将订单添加到redis中
         redis.set(String.valueOf(order.getOrderNumber()), order, 1000 * 60);
         LOGGER.info("订单加入到redis中,order={}", order);
-
-
-        Order orders = (Order) redis.get(String.valueOf(order.getOrderNumber()));
-        LOGGER.warn("查询到存在redis中的订单信息，order={}",orders);
-
         // 将订单推送到队列中
         redis.publish(order);
         LOGGER.info("订单推送到队列中,order={}", order);
