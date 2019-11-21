@@ -38,8 +38,6 @@ public class RedisListener implements MessageListener {
     private ItemService itemService;
     @Autowired
     private OrderService orderService;
-    // @Autowired
-    // private RedisLock lock;
     @Autowired
     private RedisLockRegistry redisLockRegistry;
     @Value("${spring.redis.item-count}")
@@ -59,25 +57,24 @@ public class RedisListener implements MessageListener {
         if (startTime <= 0) {
             startTime = System.currentTimeMillis();
         }
-        LOGGER.debug("监听到消息,channel={}", new String(message.getChannel()));
+        // LOGGER.debug("监听到消息,channel={}", new String(message.getChannel()));
         long outTime = 3000;
         long value = outTime + System.currentTimeMillis();
-        LOGGER.debug("尝试持有锁，channel={},value={}", new String(message.getChannel()), value);
-        // boolean mLock = lock.lock(String.valueOf(value),String.valueOf( outTime));
+        // LOGGER.debug("尝试持有锁，channel={},value={}", new String(message.getChannel()), value);
         Lock lock = redisLockRegistry.obtain("lock");
         Order order = null;
         Integer count = null;
         boolean allowAddOrder = false;
         try {
-            lock.tryLock(outTime, TimeUnit.MILLISECONDS);
+            boolean mLock = lock.tryLock(outTime, TimeUnit.MILLISECONDS);
             // 从消息队列中取出订单
             order = serializer.deserialize(message.getBody(), Order.class);
-            // if (!mLock) {
-            //     LOGGER.debug("不持有锁，重新将消息推送到消息队列,");
-            //     LOGGER.info("订单推送到队列中,order={}", order);
-            //     redis.publish(order);
-            //     return;
-            // }
+            if (!mLock) {
+                // LOGGER.debug("不持有锁，重新将消息推送到消息队列,");
+                // LOGGER.info("订单推送到队列中,order={}", order);
+                redis.publish(order);
+                return;
+            }
             LOGGER.debug("持有锁,channel={}", new String(message.getChannel()));
             // 修改订单状态
             order.setOrderStatus(OrderStatus.PROCESS_ORDER);
@@ -97,12 +94,11 @@ public class RedisListener implements MessageListener {
             // 这个时候已经有库存了
             // 创建一个临时变量保存是否有库存
             allowAddOrder = count >= order.getOrderCount();
-            // 解锁，下面进行判断
-            LOGGER.debug("解锁，channel={},value-{}", new String(message.getChannel()), value);
-            // lock.unLock(String.valueOf(value),String.valueOf( outTime));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            // 解锁，下面进行判断
+            LOGGER.debug("解锁，channel={},value={}", new String(message.getChannel()), value);
             lock.unlock();
         }
 
