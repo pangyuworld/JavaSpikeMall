@@ -46,8 +46,11 @@
         <Icon type="ios-calculator" v-if="loginType=='seller'" />
         {{userName}}
       </MenuItem>
+      <MenuItem name="addItem" v-if="loginType=='seller'" to="/add/item">
+        <Icon type="md-add" />添加商品
+      </MenuItem>
       <MenuItem name="signOut" @click="signOut" v-if="loginType">
-        <Icon type="ios-paper" />注销
+        <Icon type="md-log-out" />注销
       </MenuItem>
     </Menu>
   </div>

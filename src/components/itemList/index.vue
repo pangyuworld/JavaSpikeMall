@@ -1,6 +1,6 @@
 <template>
-  <Card :to="'/item/'+item.itemId" >
-    <div slot="title">
+  <Card :to="'/item/'+item.itemId" class="item-card">
+    <div slot="title" class="img">
       <img
         style="width:100%"
         :src="item.itemImg"
@@ -41,5 +41,12 @@ export default {
 }
 .itemCount {
   color: #9ea7b4;
+}
+.img{
+  height: 300px;
+  max-width: 300px;
+}
+.item-card{
+  height: 478px;
 }
 </style>

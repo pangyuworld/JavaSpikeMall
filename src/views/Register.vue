@@ -38,7 +38,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style>
 .my-form {
   margin-top: 150px;
 }

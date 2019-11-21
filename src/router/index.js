@@ -5,6 +5,7 @@ import Login from "../views/Login.vue"
 import Register from '../views/Register'
 import Item from '../views/Item'
 import Result from '../views/Result.vue'
+import AddItem from "../views/AddItem.vue"
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,10 @@ const routes = [{
     path: "/result/:orderNumber",
     name: "result",
     component: Result
+}, {
+    path: "/add/item",
+    name: "addItem",
+    component: AddItem
 }]
 
 const router = new VueRouter({
