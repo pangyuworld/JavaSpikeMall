@@ -43,7 +43,6 @@ export default {
       this.$api
         .getOrderStatus(this.orderNumber)
         .then(res => {
-          console.log(res);
           if (res.success === true) {
             if (res.data.orderStatus !== "0" && res.data.orderStatus !== "1") {
               this.shut = true;

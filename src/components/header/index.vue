@@ -67,7 +67,6 @@ export default {
     loginType: null
   },
   mounted() {
-    console.log(this.$cookie.get("userName"));
   },
   methods: {
     signOut() {

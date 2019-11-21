@@ -81,7 +81,6 @@ export default {
       }
       this.shopping.itemId = this.item.itemId;
       this.$api.addOrder(this.shopping).then(res => {
-        console.log(res);
         if (res.success === true) {
           this.$router.push({
             path: "/result/" + res.data.orderNumber

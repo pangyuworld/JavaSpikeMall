@@ -114,7 +114,6 @@ export default {
           checkResult = true;
         }
       });
-      console.log(checkResult);
       // 如果验证没有通过就直接跳出
       if (!checkResult) {
         return;
