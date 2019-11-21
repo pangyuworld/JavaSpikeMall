@@ -124,7 +124,7 @@ public class RedisListener implements MessageListener {
         }
         // TODO 这里是测试的尝试性语句，应该在编写好客户端以后注释掉该语句
         LOGGER.error("执行时间为,{}", System.currentTimeMillis() - startTime);
-        redis.removeKey("" + order.getOrderNumber());
+        // redis.removeKey("" + order.getOrderNumber());
     }
 
 }

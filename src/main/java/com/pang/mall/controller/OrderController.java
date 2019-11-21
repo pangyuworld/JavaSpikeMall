@@ -30,6 +30,7 @@ public class OrderController {
         return new ResponseJSON<>(orderService.addOrder(order), ResponseEnum.SUCCESS_OPTION);
     }
 
+    @Token
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseJSON<Order> getOrderByOrderNumber(Long orderNumber) {
         return new ResponseJSON<>(orderService.getOrderStatus(orderNumber), ResponseEnum.SUCCESS_OPTION);

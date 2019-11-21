@@ -49,15 +49,19 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
         }
         // 如果存在token注解，则需要认证
         // 从Cookie中取出token
-        Cookie[] cookies=request.getCookies();
-        Map<String,String> cookieMap=new HashMap<>();
-        for (Cookie cookie : cookies) {
-            cookieMap.put(cookie.getName(),cookie.getValue());
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            LOGGER.debug("无认证信息,requestPath={}", request.getRequestURI());
+            throw new UserActionException("无认证信息", ResponseEnum.NOT_LOGIN);
         }
-        LOGGER.debug("将cookie保存为一个map,CookieMap={}",cookieMap);
+        Map<String, String> cookieMap = new HashMap<>();
+        for (Cookie cookie : cookies) {
+            cookieMap.put(cookie.getName(), cookie.getValue());
+        }
+        LOGGER.debug("将cookie保存为一个map,CookieMap={}", cookieMap);
         String tokenStr = cookieMap.get("token");
         LOGGER.debug("拦截到的请求方法上包含token，进行验证,token={}", tokenStr);
-        if (tokenStr==null||tokenStr.isEmpty()) {
+        if (tokenStr == null || tokenStr.isEmpty()) {
             LOGGER.debug("无认证信息,requestPath={}", request.getRequestURI());
             throw new UserActionException("无认证信息", ResponseEnum.NOT_LOGIN);
         }

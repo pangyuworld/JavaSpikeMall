@@ -64,22 +64,18 @@ public class OrderService {
     public Order getOrderStatus(long orderNumber) {
         LOGGER.info("根据订单号查订单状态,orderNumber={}", orderNumber);
         Order order = (Order) redis.get(String.valueOf(orderNumber));
-        LOGGER.warn("查询到存在redis中的订单信息，order={}",order);
+        LOGGER.warn("查询到存在redis中的订单信息，order={}", order);
         if (order != null) {
             // 如果订单存在
-            if (order.getOrderStatus() == OrderStatus.PROCESS_SUCCESS
-                    || order.getOrderStatus() == OrderStatus.CLOSE_CAUSE_SOLD_OUT) {
-                // 订单被关闭了（无论哪种关闭情况）,则将订单从缓存中删除
-                redis.removeKey(String.valueOf(order.getOrderNumber()));
-                // 设置订单状态为关闭
-                order.setOrderStatus(OrderStatus.CLOSE_ORDER);
-                LOGGER.info("订单存在且被关闭，order={}", order);
-                // 然后返回该订单
-                return order;
-            }
-            // 如果订单属于其他情况，则直接返回订单
-            // 这里正常情况不会出现订单是CLOSE_ORDER状态的
-            LOGGER.info("查询到订单,order={}", order);
+            // 订单被关闭了（无论哪种关闭情况）,则将订单从缓存中删除
+            redis.removeKey(String.valueOf(order.getOrderNumber()));
+            // 设置订单状态为关闭
+            order.setOrderStatus(OrderStatus.CLOSE_ORDER);
+            LOGGER.info("订单存在且被关闭，order={}", order);
+            // 将订单状态更新到数据库
+            orderMapper.updateOrder(order);
+            LOGGER.debug("将订单更新到数据库，order={}", order);
+            // 然后返回该订单
             return order;
         }
         // 订单如果不存在，那就是已经写入数据库了，直接从数据库查询

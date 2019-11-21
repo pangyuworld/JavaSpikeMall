@@ -37,8 +37,9 @@
             order_status=#{orderStatus}
         </set>
         where
-        <if test="orderId!=null">order_id=#{orderId}</if>
-        <if test="orderNumber!=null">order_number=#{orderNumber}</if>
+        <if test="orderId!=null and orderId!=0">order_id=#{orderId}</if>
+        <if test="orderId!=null and orderId!=0 and orderNumber!=null and orderNumber!=0"> and </if>
+        <if test="orderNumber!=null and orderNumber!=0">order_number=#{orderNumber}</if>
     </update>
     <delete id="deleteOrder" parameterType="com.pang.mall.entity.Order">
         delete from t_order
@@ -47,3 +48,4 @@
         <if test="orderNumber!=null">order_number=#{orderNumber}</if>
     </delete>
 </mapper>
+
