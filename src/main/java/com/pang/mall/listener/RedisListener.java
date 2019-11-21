@@ -42,7 +42,6 @@ public class RedisListener implements MessageListener {
     private RedisLockRegistry redisLockRegistry;
     @Value("${spring.redis.item-count}")
     private String itemCountName;
-    private volatile long startTime = 0;
 
 
     /**
@@ -53,10 +52,6 @@ public class RedisListener implements MessageListener {
      */
     @Override
     public void onMessage(Message message, byte[] bytes) {
-        // TODO 用来测试时间的
-        if (startTime <= 0) {
-            startTime = System.currentTimeMillis();
-        }
         // LOGGER.debug("监听到消息,channel={}", new String(message.getChannel()));
         long outTime = 3000;
         long value = outTime + System.currentTimeMillis();
@@ -123,7 +118,6 @@ public class RedisListener implements MessageListener {
             LOGGER.debug("订单因为没有库存而关闭,count={},order={}", count, order);
         }
         // TODO 这里是测试的尝试性语句，应该在编写好客户端以后注释掉该语句
-        LOGGER.error("执行时间为,{}", System.currentTimeMillis() - startTime);
         // redis.removeKey("" + order.getOrderNumber());
     }
 
