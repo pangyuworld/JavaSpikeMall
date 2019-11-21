@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .price {
   color: #e4393c;
   font-size: 20px;

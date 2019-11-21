@@ -8,9 +8,11 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import api from "./lib/index"
 import * as cookieTool from './lib/cookieTool'
+import * as formatDate from "./lib/date"
 Vue.use(VueAxios, axios);
 
 Vue.prototype.$cookie = cookieTool
+Vue.prototype.$date = formatDate
 Vue.prototype.$api = api
 Vue.config.productionTip = false
 Vue.use(ViewUI);

@@ -69,6 +69,7 @@ export default {
   methods: {
     signOut() {
       this.$cookie.del("loginType");
+      this.$cookie.del("token");
       this.$parent.$parent.$parent.updateStatus();
       this.$Message.success("注销成功");
     },

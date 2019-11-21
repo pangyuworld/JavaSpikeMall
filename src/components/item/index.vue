@@ -33,7 +33,7 @@
           class="shop-btn"
           v-if="item.itemCount>0"
           @click="doShop"
-          :disabled="isShop"
+          :disabled="(isShop || userType=='seller')"
         >立即购买</Button>
         <Button type="error" class="shop-btn" v-else ghost>到货通知</Button>
       </Col>
@@ -50,7 +50,8 @@ export default {
         orderCount: 1,
         itemId: 0
       },
-      isShop: false
+      isShop: false,
+      userType:"seller"
     };
   },
   props: {
@@ -63,6 +64,9 @@ export default {
       sellerId: 0,
       itemInfo: ""
     }
+  },
+  mounted(){
+      this.getUserType();
   },
   methods: {
     doShop() {
@@ -85,12 +89,15 @@ export default {
         }
       });
       this.isShop = false;
+    },
+    getUserType(){
+      this.userType=this.$cookie.get("loginType")
     }
   }
 };
 </script>
 
-<style scpoe>
+<style scpoed>
 .itemInfo {
   color: #657180;
 }
