@@ -4,6 +4,7 @@ import com.pang.mall.common.exception.UserActionException;
 import com.pang.mall.common.restful.ResponseEnum;
 import com.pang.mall.entity.Item;
 import com.pang.mall.mapper.ItemMapper;
+import com.pang.mall.utils.check.ParameterTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,22 @@ public class ItemService {
         if ((item.getSellerId() <= 0)) {
             LOGGER.info("无认证信息或认证信息不正确,item={}", item);
             throw new UserActionException("无认证信息或认证信息不正确", ResponseEnum.NOT_LOGIN);
+        }
+        if (!ParameterTool.checkCount(item.getItemCount())){
+            LOGGER.info("库存输入出错,item={}",item);
+            throw new UserActionException("库存参数输入错误",ResponseEnum.BAD_REQUEST);
+        }
+        if (!ParameterTool.checkPrice(item.getItemPrice())){
+            LOGGER.info("单价输入出错,item={}",item);
+            throw new UserActionException("单价参数输入错误",ResponseEnum.BAD_REQUEST);
+        }
+        if (!ParameterTool.checkText(item.getItemName())){
+            LOGGER.info("商品名输入出错,item={}",item);
+            throw new UserActionException("商品名参数输入错误",ResponseEnum.BAD_REQUEST);
+        }
+        if (!ParameterTool.checkText(item.getItemInfo())){
+            LOGGER.info("商品介绍输入出错,item={}",item);
+            throw new UserActionException("商品介绍参数输入错误",ResponseEnum.BAD_REQUEST);
         }
         if (itemMapper.addItem(item) > 0) {
             LOGGER.debug("添加商品成功，item={}", item);

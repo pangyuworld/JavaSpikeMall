@@ -34,6 +34,42 @@ public class ParameterTool {
     }
 
     /**
+     * 检验URL
+     * @param url url
+     * @return 是否符合标准
+     */
+    public static boolean checkURL(String url){
+        return checkStrByPattern(url,"(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]");
+    }
+
+    /**
+     * 检验库存
+     * @param count 库存
+     * @return 是否大于0
+     */
+    public static boolean checkCount(int count){
+        return count>=0;
+    }
+
+    /**
+     * 检验单价
+     * @param price 单价
+     * @return 单价是否大于0
+     */
+    public static boolean checkPrice(double price){
+        return price>=0;
+    }
+
+    /**
+     * 校验字段是否为中英数字下划线
+     * @param itemName
+     * @return
+     */
+    public static boolean checkText(String itemName){
+        return checkStrByPattern(itemName,"^([\\u4E00-\\uFA29]|[\\uE7C7-\\uE7F3]|[a-zA-Z0-9_-]|[\"',，.。/、\\]\\[【】\\\\n\\s！!?？——_<>%;‘’；)《（）》(&+=`“”·*#@@]){0,}$");
+    }
+
+    /**
      * 校验字符串是否符合正则表达式
      *
      * @param str     要校验的字符串
