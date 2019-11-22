@@ -96,4 +96,12 @@ public class RedisTest {
         redisTool.set("user", buyer);
         System.out.println(redisTool.get("user") instanceof Buyer);
     }
+
+    @Test
+    public void publishWhile(){
+        for (int i = 0; i < 1000000; i++) {
+            redisTemplate.convertAndSend("hello","message");
+        }
+        while (true);
+    }
 }

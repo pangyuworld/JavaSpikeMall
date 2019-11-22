@@ -1,6 +1,7 @@
 package com.pang.mall.config;
 
 import com.pang.mall.listener.RedisListener;
+import com.pang.mall.listener.TestListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 
 /**
  * @author pang
@@ -34,7 +35,7 @@ public class RedisConfig {
     @Autowired
     private RedisListener redisListener;
     @Autowired
-    private ThreadPoolTaskExecutor executor;
+    private TestListener testListener;
 
     @Bean
     public RedisMessageListenerContainer container(RedisConnectionFactory factory) {
@@ -44,8 +45,6 @@ public class RedisConfig {
         // 订阅通道
         container.addMessageListener(redisListener, new PatternTopic(channelName));
         LOGGER.debug("redis订阅监听器注册完毕");
-        // 设置线程池
-        // container.setTaskExecutor(executor);
         return container;
     }
 
@@ -71,5 +70,10 @@ public class RedisConfig {
     public GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer() {
         LOGGER.debug("注册一个序列化工具Bean");
         return new GenericJackson2JsonRedisSerializer();
+    }
+
+    @Bean
+    public RedisLockRegistry redisLockRegistry(RedisConnectionFactory factory) {
+        return new RedisLockRegistry(factory, "spring-cloud",60);
     }
 }
