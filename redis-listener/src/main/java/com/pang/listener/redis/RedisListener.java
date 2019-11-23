@@ -61,15 +61,10 @@ public class RedisListener implements MessageListener {
         Integer count = null;
         boolean allowAddOrder = false;
         try {
-            boolean mLock = lock.tryLock(outTime, TimeUnit.MILLISECONDS);
+            // boolean mLock = lock.tryLock(outTime, TimeUnit.MILLISECONDS);
+            lock.lock();
             // 从消息队列中取出订单
             order = serializer.deserialize(message.getBody(), Order.class);
-            if (!mLock) {
-                // LOGGER.debug("不持有锁，重新将消息推送到消息队列,");
-                // LOGGER.info("订单推送到队列中,order={}", order);
-                redis.publish(order);
-                return;
-            }
             LOGGER.debug("持有锁,channel={}", new String(message.getChannel()));
             // 修改订单状态
             order.setOrderStatus(OrderStatus.PROCESS_ORDER);
