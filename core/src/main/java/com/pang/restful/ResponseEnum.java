@@ -1,4 +1,4 @@
-package com.pang.api.common.restful;
+package com.pang.restful;
 
 /**
  * @author pang

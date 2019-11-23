@@ -3,19 +3,23 @@ package com.pang.sql.mapper;
 
 
 import com.pang.entity.Seller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * 卖家
  */
+@RestController
+@RequestMapping("/seller")
 public interface SellerMapper {
     /**
      * 添加新的卖家
      *
      * @param seller 卖家信息
      */
-    int addSeller(Seller seller);
+    @RequestMapping(method = RequestMethod.POST)
+    int addSeller(@RequestBody Seller seller);
 
     /**
      * 根据id查找卖家
@@ -23,7 +27,8 @@ public interface SellerMapper {
      * @param sellerId 卖家id
      * @return 卖家信息
      */
-    Seller selectSellerById(long sellerId);
+    @RequestMapping(value = "/{sellerId}", method = RequestMethod.GET)
+    Seller selectSellerById(@PathVariable long sellerId);
 
     /**
      * 根据登录名查找卖家
@@ -31,13 +36,15 @@ public interface SellerMapper {
      * @param userName 登录名
      * @return 卖家信息
      */
-    Seller selectSellerByLoginName(String userName);
+    @RequestMapping(value = "/name/{userName}", method = RequestMethod.GET)
+    Seller selectSellerByLoginName(@PathVariable String userName);
 
     /**
      * 查找所有卖家
      *
      * @return 卖家信息列表
      */
+    @RequestMapping(method = RequestMethod.GET)
     List<Seller> selectAllSeller();
 
     /**
@@ -46,7 +53,8 @@ public interface SellerMapper {
      * @param seller 要更新成的卖家信息
      * @return 更新成功返回1
      */
-    int updateSeller(Seller seller);
+    @RequestMapping(method = RequestMethod.PUT)
+    int updateSeller(@RequestBody Seller seller);
 
     /**
      * 删除卖家信息
@@ -54,5 +62,6 @@ public interface SellerMapper {
      * @param sellerId 要删除的卖家信息
      * @return 删除成功返回1
      */
-    int deleteSeller(long sellerId);
+    @RequestMapping(value = "/{sellerId}",method = RequestMethod.DELETE)
+    int deleteSeller(@PathVariable long sellerId);
 }

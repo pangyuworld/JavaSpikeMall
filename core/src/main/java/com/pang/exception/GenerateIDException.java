@@ -1,12 +1,12 @@
-package com.pang.generator.exception;
+package com.pang.exception;
 
 /**
  * @author pang
  * @version V1.0
  * @ClassName: GenerateIDException
- * @Package com.pang.generator.exception
- * @description: 生成Id时产生的异常
- * @date 2019/11/22 20:58
+ * @Package com.pang.mall.common.exception
+ * @description: 生成ID异常
+ * @date 2019/11/11 23:34
  */
 public class GenerateIDException extends RuntimeException {
     public GenerateIDException() {

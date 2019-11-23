@@ -4,12 +4,15 @@ package com.pang.sql.mapper;
 
 
 import com.pang.entity.Item;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * 商品
  */
+@RestController
+@RequestMapping("/item")
 public interface ItemMapper {
     /**
      * 添加新的商品
@@ -17,7 +20,8 @@ public interface ItemMapper {
      * @param item 商品信息
      * @return 添加成功返回1
      */
-    int addItem(Item item);
+    @RequestMapping(method = RequestMethod.POST)
+    int addItem(@RequestBody Item item);
 
     /**
      * 商品库存-1
@@ -25,7 +29,8 @@ public interface ItemMapper {
      * @param itemId 商品id
      * @return 执行成功返回1
      */
-    int reduceItemCount(long itemId, int count);
+    @RequestMapping(value = "/reduce", method = RequestMethod.PUT)
+    int reduceItemCount(@RequestParam long itemId, @RequestParam int count);
 
     /**
      * 获得商品库存
@@ -33,7 +38,8 @@ public interface ItemMapper {
      * @param itemId 商品ID
      * @return 商品库存
      */
-    int getCount(long itemId);
+    @RequestMapping(value = "/{itemId}/count", method = RequestMethod.GET)
+    int getCount(@PathVariable long itemId);
 
     /**
      * 根据Id获取商品信息
@@ -41,13 +47,15 @@ public interface ItemMapper {
      * @param itemId 商品Id
      * @return 商品信息
      */
-    Item selectItemById(long itemId);
+    @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
+    Item selectItemById(@PathVariable long itemId);
 
     /**
      * 获得全部商品信息
      *
      * @return 商品信息列表
      */
+    @RequestMapping(method = RequestMethod.GET)
     List<Item> selectAllItem();
 
     /**
@@ -56,7 +64,8 @@ public interface ItemMapper {
      * @param item 更新后的商品信息
      * @return 更新成功返回1
      */
-    int updateItem(Item item);
+    @RequestMapping(method = RequestMethod.PUT)
+    int updateItem(@RequestBody Item item);
 
     /**
      * 删除商品信息
@@ -64,5 +73,6 @@ public interface ItemMapper {
      * @param itemId 要删除的商品ID
      * @return 删除成功返回1
      */
-    int deleteItem(long itemId);
+    @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE)
+    int deleteItem(@PathVariable long itemId);
 }

@@ -22,7 +22,7 @@
         <!--自己的依赖-->
         <dependency>
             <groupId>com.pang</groupId>
-            <artifactId>common-entity</artifactId>
+            <artifactId>core</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

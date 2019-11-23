@@ -1,6 +1,7 @@
 package com.pang.generator.util;
 
-import com.pang.generator.exception.GenerateIDException;
+
+import com.pang.exception.GenerateIDException;
 
 /**
  * @author pang
