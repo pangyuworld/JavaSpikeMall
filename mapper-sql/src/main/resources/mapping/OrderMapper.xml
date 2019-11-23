@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pang.sql.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.pang.entity.Order">
+        <id column="order_id" property="orderId" jdbcType="INTEGER"/>
+        <result column="order_time" property="orderTime" jdbcType="TIMESTAMP"/>
+        <result column="order_status" property="orderStatus" jdbcType="INTEGER"/>
+        <result column="order_number" property="orderNumber" jdbcType="INTEGER"/>
+        <result column="item_id" property="itemId" jdbcType="INTEGER"/>
+        <result column="buyer_id" property="buyerId" jdbcType="VARCHAR"/>
+        <result column="order_count" property="orderCount" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="addOrder" parameterType="com.pang.entity.Order">
+        insert into t_order( order_time, item_id, buyer_id, order_status, order_number,order_count)
+        values (#{orderTime},#{itemId},#{buyerId},#{orderStatus},#{orderNumber},#{orderCount})
+    </insert>
+    <select id="selectOrderById" resultMap="BaseResultMap">
+        select
+        order_id, order_time, item_id, buyer_id, order_status, order_number,order_count
+        from t_order
+        where order_id=#{orderId}
+    </select>
+    <select id="selectOrderByOrderNumber" resultMap="BaseResultMap">
+        select
+        order_id, order_time, item_id, buyer_id, order_status, order_number,order_count
+        from t_order
+        where order_number=#{orderNumber}
+    </select>
+    <select id="selectAllOrder" resultMap="BaseResultMap">
+        select
+        order_id, order_time, item_id, buyer_id, order_status, order_number,order_count
+        from t_order
+    </select>
+    <update id="updateOrder" parameterType="com.pang.entity.Order">
+        update t_order
+        <set>
+            order_status=#{orderStatus}
+        </set>
+        where
+        <if test="orderId!=null and orderId!=0">order_id=#{orderId}</if>
+        <if test="orderId!=null and orderId!=0 and orderNumber!=null and orderNumber!=0"> and </if>
+        <if test="orderNumber!=null and orderNumber!=0">order_number=#{orderNumber}</if>
+    </update>
+    <delete id="deleteOrder" parameterType="com.pang.entity.Order">
+        delete from t_order
+        where
+        <if test="orderId!=null">order_id=#{orderId}</if>
+        <if test="orderNumber!=null">order_number=#{orderNumber}</if>
+    </delete>
+</mapper>
+

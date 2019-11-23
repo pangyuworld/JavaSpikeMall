@@ -1,6 +1,6 @@
 package com.pang.api.controller;
 
-import com.pang.api.clout.service.IdGenerator;
+import com.pang.api.service.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

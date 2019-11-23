@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pang.sql.mapper.SellerMapper">
+    <resultMap id="BaseResultMap" type="com.pang.entity.Seller">
+        <id column="seller_id" property="sellerId" jdbcType="INTEGER"/>
+        <result column="seller_name" property="sellerName" jdbcType="VARCHAR"/>
+        <result column="seller_login_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="seller_password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!--  添加新的卖家  -->
+    <insert id="addSeller" parameterType="com.pang.entity.Seller">
+        insert into t_seller(seller_name,seller_login_name,seller_password)
+        values (#{sellerName},#{userName},#{password})
+    </insert>
+    <!--  根据id查找卖家  -->
+    <select id="selectSellerById" resultMap="BaseResultMap">
+        select
+        seller_id, seller_name, seller_login_name, seller_password
+        from t_seller
+        where seller_id=#{sellerId}
+    </select>
+    <!--  查找所有卖家信息  -->
+    <select id="selectAllSeller" resultMap="BaseResultMap">
+        select
+        seller_id, seller_name, seller_login_name, seller_password
+        from t_seller
+    </select>
+
+    <select id="selectSellerByLoginName" resultMap="BaseResultMap">
+        select
+            seller_id, seller_name, seller_login_name, seller_password
+        from t_seller
+        where seller_login_name=#{userName}
+    </select>
+    <!-- 更新卖家信息 -->
+    <update id="updateSeller" parameterType="com.pang.entity.Seller">
+        update t_seller
+        <set>
+            seller_name=#{sellerName}
+        </set>
+        where seller_id=#{sellerId}
+    </update>
+    <!--  删除卖家信息  -->
+    <delete id="deleteSeller">
+        delete from t_seller
+        where seller_id=#{sellerId}
+    </delete>
+</mapper>

@@ -1,4 +1,4 @@
-package com.pang.api.clout.service;
+package com.pang.api.service;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
