@@ -1,7 +1,6 @@
 package com.pang.mall.config;
 
 import com.pang.mall.listener.RedisListener;
-import com.pang.mall.listener.TestListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +33,6 @@ public class RedisConfig {
 
     @Autowired
     private RedisListener redisListener;
-    @Autowired
-    private TestListener testListener;
 
     @Bean
     public RedisMessageListenerContainer container(RedisConnectionFactory factory) {
