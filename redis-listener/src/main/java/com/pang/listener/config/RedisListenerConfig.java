@@ -45,6 +45,6 @@ public class RedisListenerConfig {
     @Bean
     public RedisLockRegistry redisLockRegistry(RedisConnectionFactory factory) {
         LOGGER.debug("redis注册全局锁");
-        return new RedisLockRegistry(factory, "spring-cloud", 60);
+        return new RedisLockRegistry(factory, "spring-cloud");
     }
 }

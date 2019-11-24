@@ -47,7 +47,7 @@ public class RedisTool {
      */
     public boolean set(String key, Object value) {
         try {
-            redisValue.set(key, value);
+            redisValue.set(key, value,this.getExpire(key),TimeUnit.MILLISECONDS);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
