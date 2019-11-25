@@ -52,10 +52,8 @@ public class RedisListener implements MessageListener {
      */
     @Override
     public void onMessage(Message message, byte[] bytes) {
-        // LOGGER.debug("监听到消息,channel={}", new String(message.getChannel()));
         long outTime = 3000;
         long value = outTime + System.currentTimeMillis();
-        // LOGGER.debug("尝试持有锁，channel={},value={}", new String(message.getChannel()), value);
         Lock lock = redisLockRegistry.obtain("lock");
         // 从消息队列中取出订单
         Order order = serializer.deserialize(message.getBody(), Order.class);
@@ -106,7 +104,7 @@ public class RedisListener implements MessageListener {
         }
         // 如果库存大于要购买的数量
         if (allowAddOrder) {
-            LOGGER.warn("有库存，订单正常受理，count={},order={}", count, order);
+            LOGGER.info("有库存，订单正常受理，count={},order={}", count, order);
             // 如果有库存，那订单就可以正常处理
             boolean addOrderStatus = orderService.addOrderIntoDataBase(order);
             boolean reduceStatus = itemService.decreaseStock(order.getItemId(), order.getOrderCount());
@@ -122,7 +120,7 @@ public class RedisListener implements MessageListener {
             // 订单因为缺货然后就关闭订单
             order.setOrderStatus(OrderStatus.CLOSE_CAUSE_SOLD_OUT);
             redis.set(String.valueOf(order.getOrderNumber()), order);
-            LOGGER.warn("订单因为没有库存而关闭,count={},order={}", count, order);
+            LOGGER.info("订单因为没有库存而关闭,count={},order={}", count, order);
         }
     }
 
