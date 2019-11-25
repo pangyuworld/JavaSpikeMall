@@ -71,6 +71,6 @@ public class RedisConfig {
 
     @Bean
     public RedisLockRegistry redisLockRegistry(RedisConnectionFactory factory) {
-        return new RedisLockRegistry(factory, "spring-cloud",60);
+        return new RedisLockRegistry(factory, "spring-cloud");
     }
 }

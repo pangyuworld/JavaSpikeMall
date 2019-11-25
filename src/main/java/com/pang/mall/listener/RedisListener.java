@@ -57,16 +57,14 @@ public class RedisListener implements MessageListener {
         long value = outTime + System.currentTimeMillis();
         // LOGGER.debug("尝试持有锁，channel={},value={}", new String(message.getChannel()), value);
         Lock lock = redisLockRegistry.obtain("lock");
-        Order order = null;
+        // 从消息队列中取出订单
+        Order order = serializer.deserialize(message.getBody(), Order.class);
         Integer count = null;
         boolean allowAddOrder = false;
+        boolean tryLock = false;
         try {
-            boolean mLock = lock.tryLock(outTime, TimeUnit.MILLISECONDS);
-            // 从消息队列中取出订单
-            order = serializer.deserialize(message.getBody(), Order.class);
-            if (!mLock) {
-                // LOGGER.debug("不持有锁，重新将消息推送到消息队列,");
-                // LOGGER.info("订单推送到队列中,order={}", order);
+            tryLock = lock.tryLock(outTime, TimeUnit.MILLISECONDS);
+            if (!tryLock) {
                 redis.publish(order);
                 return;
             }
@@ -82,32 +80,41 @@ public class RedisListener implements MessageListener {
             count = (Integer) redis.get(itemCountName + order.getItemId());
             if (null == count) {
                 count = itemService.getCount(order.getItemId());
-                redis.set(itemCountName + order.getItemId(), count, 1000 * 60);
+                redis.set(itemCountName + order.getItemId(), count, 1000 * 600);
                 LOGGER.debug("产品库存为空，向redis写入产品库存，itemCount={},timeOut={}", order, 1000 * 20);
+            } else {
+                redis.expire(itemCountName + order.getItemId(), 1000 * 60);
             }
             LOGGER.debug("获取产品库存,itemCount={}", count);
             // 这个时候已经有库存了
             // 创建一个临时变量保存是否有库存
             allowAddOrder = count >= order.getOrderCount();
+            // 有库存的话，库存要在同步代码块里面减少
+            if (allowAddOrder) {
+                redis.decrement(itemCountName + order.getItemId(), order.getOrderCount());
+                LOGGER.debug("库存在redis中减少1，key={}，value={}", itemCountName + order.getItemId(), count - order.getOrderCount());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 解锁，下面进行判断
-            LOGGER.debug("解锁，channel={},value={}", new String(message.getChannel()), value);
-            lock.unlock();
+            if (tryLock) {
+                LOGGER.debug("解锁，channel={},value={}", new String(message.getChannel()), value);
+                lock.unlock();
+            }
+
         }
-
-
         // 如果库存大于要购买的数量
         if (allowAddOrder) {
-            LOGGER.debug("有库存，订单正常受理，order={}", order);
+            LOGGER.warn("有库存，订单正常受理，count={},order={}", count, order);
             // 如果有库存，那订单就可以正常处理
-            redis.decrement(itemCountName + order.getItemId(), order.getOrderCount());
-            LOGGER.debug("库存在redis中减少1，key={}", itemCountName + order.getItemId());
-            order.setOrderStatus(OrderStatus.PROCESS_SUCCESS);
-            orderService.addOrderIntoDataBase(order);
-            itemService.decreaseStock(order.getItemId(), order.getOrderCount());
-            LOGGER.debug("更新订单状态到redis中，order={}", order);
+            boolean addOrderStatus = orderService.addOrderIntoDataBase(order);
+            boolean reduceStatus = itemService.decreaseStock(order.getItemId(), order.getOrderCount());
+            if (addOrderStatus && reduceStatus) {
+                order.setOrderStatus(OrderStatus.PROCESS_SUCCESS);
+            } else {
+                LOGGER.warn("数据库操作失败，失败原因addOrderStatus={},reduceStatus={}", addOrderStatus, reduceStatus);
+            }
             redis.set(String.valueOf(order.getOrderNumber()), order);
             LOGGER.debug("订单处理完毕，并更新到redis,order={}", order);
 
@@ -115,10 +122,8 @@ public class RedisListener implements MessageListener {
             // 订单因为缺货然后就关闭订单
             order.setOrderStatus(OrderStatus.CLOSE_CAUSE_SOLD_OUT);
             redis.set(String.valueOf(order.getOrderNumber()), order);
-            LOGGER.debug("订单因为没有库存而关闭,count={},order={}", count, order);
+            LOGGER.warn("订单因为没有库存而关闭,count={},order={}", count, order);
         }
-        // TODO 这里是测试的尝试性语句，应该在编写好客户端以后注释掉该语句
-        // redis.removeKey("" + order.getOrderNumber());
     }
 
 }
