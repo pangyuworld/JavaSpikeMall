@@ -6,6 +6,9 @@ import Register from '../views/Register'
 import Item from '../views/Item'
 import Result from '../views/Result.vue'
 import AddItem from "../views/AddItem.vue"
+import SellerOrder from "../views/SellerOrder.vue"
+import BuyerOrder from "../views/BuyerOrder.vue"
+import ItemEditor from "../views/ItemEditor.vue"
 
 Vue.use(VueRouter)
 
@@ -41,6 +44,22 @@ const routes = [{
     path: "/add/item",
     name: "addItem",
     component: AddItem
+}, {
+    path: "/seller/order/:itemId",
+    name: "order",
+    component: SellerOrder
+}, {
+    path: "/seller/order",
+    name: "sellerOrder",
+    component: SellerOrder
+}, {
+    path: "/buyer/order",
+    name: "buyerOrder",
+    component: BuyerOrder
+}, {
+    path: "/seller/item/:itemId",
+    name: "itemEditor",
+    component: ItemEditor
 }]
 
 const router = new VueRouter({

@@ -28,14 +28,14 @@
         ></InputNumber>
         <br />
         <br />
-        <Button
-          type="error"
-          class="shop-btn"
-          v-if="item.itemCount>0"
-          @click="doShop"
-          :disabled="(isShop || userType=='seller')"
-        >立即购买</Button>
-        <Button type="error" class="shop-btn" v-else ghost>到货通知</Button>
+        <div v-if="userType!='seller'" class="shop-btn">
+          <Button type="error" v-if="item.itemCount>0" @click="doShop" :disabled="isShop">立即购买</Button>
+          <Button type="error" v-else ghost>到货通知</Button>
+        </div>
+        <div v-else class="shop-btn">
+          <Button type="primary" :to="'/seller/order/'+item.itemId">查看售出详情</Button>
+          <Button type="info" :to="'/seller/item/'+item.itemId" :disabled="!isMine">修改商品信息</Button>
+        </div>
       </Col>
       <Col span="1" />
     </Row>
@@ -46,12 +46,13 @@
 export default {
   data() {
     return {
+      isMine: false,
       shopping: {
         orderCount: 1,
         itemId: 0
       },
       isShop: false,
-      userType:"seller"
+      userType: "seller"
     };
   },
   props: {
@@ -65,8 +66,8 @@ export default {
       itemInfo: ""
     }
   },
-  mounted(){
-      this.getUserType();
+  mounted() {
+    this.getUserType();
   },
   methods: {
     doShop() {
@@ -89,8 +90,20 @@ export default {
       });
       this.isShop = false;
     },
-    getUserType(){
-      this.userType=this.$cookie.get("loginType")
+    getUserType() {
+      this.userType = this.$cookie.get("loginType");
+    },
+    confirm() {
+      this.$api.confirm(this.item.sellerId).then(res => {
+        this.isMine = res.data;
+      });
+    }
+  },
+  watch: {
+    item() {
+      if (this.userType == "seller") {
+        this.confirm();
+      }
     }
   }
 };

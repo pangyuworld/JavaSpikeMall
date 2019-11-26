@@ -49,6 +49,12 @@
       <MenuItem name="addItem" v-if="loginType=='seller'" to="/add/item">
         <Icon type="md-add" />添加商品
       </MenuItem>
+      <MenuItem name="addItem" v-if="loginType=='seller'" to="/seller/order">
+        <Icon type="md-add" />查看订单
+      </MenuItem>
+      <MenuItem name="addItem" v-if="loginType=='buyer'" to="/buyer/order">
+        <Icon type="md-add" />查看订单
+      </MenuItem>
       <MenuItem name="signOut" @click="signOut" v-if="loginType">
         <Icon type="md-log-out" />注销
       </MenuItem>
@@ -66,8 +72,7 @@ export default {
   props: {
     loginType: null
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     signOut() {
       this.$cookie.del("loginType");
@@ -85,7 +90,7 @@ export default {
   },
   watch: {
     loginType() {
-      this.userName = this.$cookie.get("userName");
+      this.userName = decodeURI(this.$cookie.get("userName"));
     }
   }
 };

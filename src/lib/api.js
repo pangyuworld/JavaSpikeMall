@@ -58,3 +58,28 @@ export const getOrderStatus = params => {
         method: "get"
     }).then(res => res.data)
 }
+
+// 获取商家的订单
+export const getOrderSeller = params => {
+    return axios.get("/order/seller").then(res => res.data)
+}
+
+// 获取商家的订单
+export const getOrderSellerItem = params => {
+    return axios.get("/order/seller/item/" + params).then(res => res.data)
+}
+
+// 获取买家的全部订单
+export const getOrderBuyer = params => {
+    return axios.get("/order/buyer").then(res => res.data)
+}
+
+// 修改商品信息
+export const editItem = params => {
+    return axios.put("/item", params).then(res => res.data)
+}
+
+// 确认自己的信息
+export const confirm = params => {
+    return axios.post("/item/confirm/" + params).then(res => res.data)
+}
