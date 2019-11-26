@@ -36,12 +36,11 @@
         <set>
             item_count=#{itemCount},
             item_name=#{itemName},
-            seller_id=#{sellerId},
             item_img=#{itemImg},
             item_price=#{itemPrice},
             item_info=#{itemInfo}
         </set>
-        where item_id=#{itemId}
+        where item_id=#{itemId} and seller_id=#{sellerId}
     </update>
     <delete id="deleteItem">
         delete from t_item where item_id=#{itemId}

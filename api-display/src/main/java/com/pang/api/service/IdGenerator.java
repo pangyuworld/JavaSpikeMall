@@ -1,6 +1,5 @@
 package com.pang.api.service;
 
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = "id-generator")
 public interface IdGenerator {
-    @RequestMapping(value = "/id",method = RequestMethod.GET)
-    Long getUniqueId();
+    @RequestMapping(value = "/id", method = RequestMethod.GET)
+    Long getUniqueId(@RequestParam long workId);
 }

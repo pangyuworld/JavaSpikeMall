@@ -7,9 +7,12 @@ import com.pang.redis.RedisTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author pang
@@ -28,6 +31,8 @@ public class OrderService {
     private RedisTool redis;
     @Autowired
     private IdGenerator idGenerator;
+    @Value("${server.port}")
+    private long port;
 
     /**
      * 下单
@@ -39,7 +44,7 @@ public class OrderService {
         // 设置下单时间
         order.setOrderTime(new Date());
         // 设置订单号
-        order.setOrderNumber(idGenerator.getUniqueId());
+        order.setOrderNumber(idGenerator.getUniqueId(port % 100));
         // 设置当前订单状态
         order.setOrderStatus(OrderStatus.CREATED_ORDER);
         // 将订单添加到redis中
@@ -62,14 +67,14 @@ public class OrderService {
         Order order = (Order) redis.get(String.valueOf(orderNumber));
         LOGGER.warn("查询到存在redis中的订单信息，order={}", order);
         if (order != null) {
-            if (order.getOrderStatus()>=2) {
+            if (order.getOrderStatus() >= 2) {
                 // 如果订单存在
                 // 订单被关闭了（无论哪种关闭情况）,则将订单从缓存中删除
-                // if (redis.removeKey(String.valueOf(order.getOrderNumber()))) {
-                //     LOGGER.debug("从redis中删除了订单，orderNumber={}", order.getOrderNumber());
-                // } else {
-                //     LOGGER.warn("从redis中删除订单时出错，orderNumber={}", order.getOrderNumber());
-                // }
+                if (redis.removeKey(String.valueOf(order.getOrderNumber()))) {
+                    LOGGER.debug("从redis中删除了订单，orderNumber={}", order.getOrderNumber());
+                } else {
+                    LOGGER.warn("从redis中删除订单时出错，orderNumber={}", order.getOrderNumber());
+                }
                 // 设置订单状态为关闭
                 order.setOrderStatus(OrderStatus.CLOSE_ORDER);
                 LOGGER.info("订单存在且被关闭，order={}", order);
@@ -99,5 +104,36 @@ public class OrderService {
         }
         LOGGER.info("向数据库插入数据失败,order={}", order);
         return false;
+    }
+
+    /**
+     * 获取商家的订单
+     *
+     * @param sellerId 商家ID
+     * @return 订单列表
+     */
+    public List<Map<String, Object>> getOrderListBySeller(long sellerId) {
+        return orderMapper.getOrderBySeller(sellerId);
+    }
+
+    /**
+     * 获取商家某商品的订单
+     *
+     * @param sellerId 商家ID
+     * @param itemId   商品ID
+     * @return 订单列表
+     */
+    public List<Map<String, Object>> getOrderBySellerAndItem(long sellerId, long itemId) {
+        return orderMapper.getOrderBySellerAndItem(sellerId, itemId);
+    }
+
+    /**
+     * 获取买家的全部订单
+     *
+     * @param buyerId 买家ID
+     * @return 订单列表
+     */
+    public List<Map<String, Object>> getOrderByBuyer(long buyerId) {
+        return orderMapper.getOrderByBuyer(buyerId);
     }
 }

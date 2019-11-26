@@ -15,7 +15,7 @@ public class IdGenerator {
     /** 机器ID */
     private static long workedId = 1L;
     /** 机器ID长度 */
-    private static final long WORKED_ID_BIT = 5;
+    private static long WORKED_ID_BIT;
     /** 机房ID */
     private static long dataCenterId = 2L;
     /** 机房ID长度 */
@@ -43,8 +43,11 @@ public class IdGenerator {
 
     /**
      * 下一个ID
+     *
+     * @param workedId 机房ID，使用端口号的低两位表示
      */
-    public static synchronized long nextId() {
+    public static synchronized long nextId(long workedId) {
+        WORKED_ID_BIT = workedId;
         // 获取当前时间
         long nowTime = System.currentTimeMillis();
         if (nowTime < lastTime) {
@@ -57,7 +60,7 @@ public class IdGenerator {
                 // 这里是因为当序列号超出最大值的时候，执行与操作会让序列号为0
                 // 如果出现了这种情况，示例里是等待下次执行
                 while (nowTime <= System.currentTimeMillis()) ;
-                return nextId();
+                return nextId(workedId);
             }
         } else {
             // 如果当前时间大于上次生成序列号的时间，则将序列号清零

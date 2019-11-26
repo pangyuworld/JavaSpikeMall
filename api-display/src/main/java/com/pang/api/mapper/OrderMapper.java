@@ -3,10 +3,10 @@ package com.pang.api.mapper;
 
 import com.pang.entity.Order;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单
@@ -65,4 +65,32 @@ public interface OrderMapper {
      */
     @RequestMapping(method = RequestMethod.DELETE)
     int deleteOrder(@RequestBody Order order);
+
+    /**
+     * 查询商家的订单
+     *
+     * @param sellerId 商家id
+     * @return 订单列表
+     */
+    @RequestMapping(value = "/seller/{sellerId}", method = RequestMethod.GET)
+    List<Map<String, Object>> getOrderBySeller(@RequestParam @PathVariable long sellerId);
+
+    /**
+     * 查询商家特定商品的订单
+     *
+     * @param sellerId 商家Id
+     * @param itemId   商品Id
+     * @return 订单列表
+     */
+    @RequestMapping(value = "/seller/{sellerId}/item/{itemId}", method = RequestMethod.GET)
+    List<Map<String, Object>> getOrderBySellerAndItem(@RequestParam @PathVariable long sellerId, @RequestParam @PathVariable long itemId);
+
+    /**
+     * 查询买家全部订单
+     *
+     * @param buyerId 买家ID
+     * @return 订单列表
+     */
+    @RequestMapping(value = "/buyer/{buyerId}", method = RequestMethod.GET)
+    List<Map<String, Object>> getOrderByBuyer(@RequestParam @PathVariable long buyerId);
 }

@@ -37,21 +37,21 @@ public class ItemService {
             LOGGER.info("无认证信息或认证信息不正确,item={}", item);
             throw new UserActionException("无认证信息或认证信息不正确", ResponseEnum.NOT_LOGIN);
         }
-        if (!ParameterTool.checkCount(item.getItemCount())){
-            LOGGER.info("库存输入出错,item={}",item);
-            throw new UserActionException("库存参数输入错误",ResponseEnum.BAD_REQUEST);
+        if (!ParameterTool.checkCount(item.getItemCount())) {
+            LOGGER.info("库存输入出错,item={}", item);
+            throw new UserActionException("库存参数输入错误", ResponseEnum.BAD_REQUEST);
         }
-        if (!ParameterTool.checkPrice(item.getItemPrice())){
-            LOGGER.info("单价输入出错,item={}",item);
-            throw new UserActionException("单价参数输入错误",ResponseEnum.BAD_REQUEST);
+        if (!ParameterTool.checkPrice(item.getItemPrice())) {
+            LOGGER.info("单价输入出错,item={}", item);
+            throw new UserActionException("单价参数输入错误", ResponseEnum.BAD_REQUEST);
         }
-        if (!ParameterTool.checkText(item.getItemName())){
-            LOGGER.info("商品名输入出错,item={}",item);
-            throw new UserActionException("商品名参数输入错误",ResponseEnum.BAD_REQUEST);
+        if (!ParameterTool.checkText(item.getItemName())) {
+            LOGGER.info("商品名输入出错,item={}", item);
+            throw new UserActionException("商品名参数输入错误", ResponseEnum.BAD_REQUEST);
         }
-        if (!ParameterTool.checkText(item.getItemInfo())){
-            LOGGER.info("商品介绍输入出错,item={}",item);
-            throw new UserActionException("商品介绍参数输入错误",ResponseEnum.BAD_REQUEST);
+        if (!ParameterTool.checkText(item.getItemInfo())) {
+            LOGGER.info("商品介绍输入出错,item={}", item);
+            throw new UserActionException("商品介绍参数输入错误", ResponseEnum.BAD_REQUEST);
         }
         if (itemMapper.addItem(item) > 0) {
             LOGGER.debug("添加商品成功，item={}", item);
@@ -84,30 +84,12 @@ public class ItemService {
     }
 
     /**
-     * 减少N个库存
+     * 更新商品信息
      *
-     * @param itemId 要减少库存的商品ID
-     * @param count 要减少的数量
+     * @param item 更新后的商品信息
+     * @return 是否成功
      */
-    public boolean decreaseStock(long itemId,int count) {
-        LOGGER.info("减少商品库存，itemId={},count={}", itemId,count);
-        if (itemMapper.reduceItemCount(itemId,count) > 0) {
-            LOGGER.debug("减少商品库存成功");
-            return true;
-        }
-        LOGGER.debug("减少商品库存失败");
-        return false;
-    }
-
-    /**
-     * 获取商品库存
-     *
-     * @param itemId 商品ID
-     * @return 商品库存
-     */
-    public int getCount(long itemId) {
-        int count = itemMapper.getCount(itemId);
-        LOGGER.debug("获取商品库存,itemId={},count{}", itemId, count);
-        return count;
+    public boolean updateItem(Item item) {
+        return itemMapper.updateItem(item) > 0;
     }
 }

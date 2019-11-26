@@ -3,7 +3,6 @@ package com.pang.api.mapper;
 
 import com.pang.entity.Seller;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +64,6 @@ public interface SellerMapper {
      * @param sellerId 要删除的卖家信息
      * @return 删除成功返回1
      */
-    @RequestMapping(value = "/{sellerId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{sellerId}", method = RequestMethod.DELETE)
     int deleteSeller(@PathVariable long sellerId);
 }

@@ -25,7 +25,7 @@ public class ItemController {
     private ItemService itemService;
 
     @Token
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseJSON<Boolean> addItem(@RequestBody Item item, @RequestAttribute String seller) {
         Long sellerId = Long.parseLong(seller);
         item.setSellerId(sellerId);
@@ -37,8 +37,23 @@ public class ItemController {
         return new ResponseJSON<>(itemService.getItemById(itemId), ResponseEnum.SUCCESS_OPTION);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseJSON<List<Item>> getItem() {
         return new ResponseJSON<>(itemService.getAllItem(), ResponseEnum.SUCCESS_OPTION);
+    }
+
+    @Token
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseJSON<Boolean> updateItem(@RequestBody Item item, @RequestAttribute String seller) {
+        Long sellerId = Long.parseLong(seller);
+        item.setSellerId(sellerId);
+        return new ResponseJSON<>(itemService.updateItem(item), ResponseEnum.SUCCESS_OPTION);
+    }
+
+    @Token
+    @RequestMapping(value = "/confirm/{sellerId}",method = RequestMethod.POST)
+    public ResponseJSON<Boolean> confirm(@PathVariable long sellerId,@RequestAttribute String seller){
+        boolean result=Long.parseLong(seller)==sellerId;
+        return new ResponseJSON<>(result,ResponseEnum.SUCCESS_OPTION);
     }
 }

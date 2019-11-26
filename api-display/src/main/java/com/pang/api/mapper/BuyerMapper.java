@@ -2,7 +2,10 @@ package com.pang.api.mapper;
 
 import com.pang.entity.Buyer;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public interface BuyerMapper {
      * @param buyerId 买家id
      * @return 买家信息
      */
-    @RequestMapping(value = "/{buyerId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{buyerId}", method = RequestMethod.GET)
     Buyer selectBuyerById(@PathVariable long buyerId);
 
     /**
@@ -40,7 +43,7 @@ public interface BuyerMapper {
      * @param userName 登录名
      * @return 买家信息
      */
-    @RequestMapping(value = "/name/{userName}",method = RequestMethod.GET)
+    @RequestMapping(value = "/name/{userName}", method = RequestMethod.GET)
     Buyer selectBuyerByLoginName(@PathVariable String userName);
 
     /**
@@ -66,6 +69,6 @@ public interface BuyerMapper {
      * @param buyerId 要删除的买家id
      * @return 删除成功返回1
      */
-    @RequestMapping(value = "/{buyerId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{buyerId}", method = RequestMethod.DELETE)
     int deleteBuyer(@PathVariable long buyerId);
 }

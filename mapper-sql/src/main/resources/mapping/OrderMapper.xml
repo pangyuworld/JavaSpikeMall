@@ -38,7 +38,7 @@
         </set>
         where
         <if test="orderId!=null and orderId!=0">order_id=#{orderId}</if>
-        <if test="orderId!=null and orderId!=0 and orderNumber!=null and orderNumber!=0"> and </if>
+        <if test="orderId!=null and orderId!=0 and orderNumber!=null and orderNumber!=0">and</if>
         <if test="orderNumber!=null and orderNumber!=0">order_number=#{orderNumber}</if>
     </update>
     <delete id="deleteOrder" parameterType="com.pang.entity.Order">
@@ -47,5 +47,63 @@
         <if test="orderId!=null">order_id=#{orderId}</if>
         <if test="orderNumber!=null">order_number=#{orderNumber}</if>
     </delete>
+    <select id="getOrderBySeller" resultType="map">
+        select
+        order_id as orderId,
+        order_time as orderTime,
+        t_order.item_id as itemId,
+        t_order.buyer_id as buyerId,
+        order_status as orderStatus,
+        order_number as orderNumber,
+        order_count as orderCount,
+        ti.item_info as itemInfo,
+        ti.item_name as itemName,
+        ti.item_price as itemPrice,
+        ti.item_img as itemImg,
+        tb.buyer_name as buyerName
+        from t_order
+        inner join t_item ti on t_order.item_id = ti.item_id
+        inner join t_buyer tb on t_order.buyer_id = tb.buyer_id
+        where ti.seller_id=#{sellerId}
+    </select>
+    <select id="getOrderBySellerAndItem" resultType="map">
+        select
+            order_id as orderId,
+            order_time as orderTime,
+            t_order.item_id as itemId,
+            t_order.buyer_id as buyerId,
+            order_status as orderStatus,
+            order_number as orderNumber,
+            order_count as orderCount,
+            ti.item_info as itemInfo,
+            ti.item_name as itemName,
+            ti.item_price as itemPrice,
+            ti.item_img as itemImg,
+            tb.buyer_name as buyerName
+        from t_order
+        inner join t_item ti on t_order.item_id = ti.item_id
+        inner join t_buyer tb on t_order.buyer_id = tb.buyer_id
+        where ti.seller_id=#{sellerId} and ti.item_id=#{itemId}
+    </select>
+
+    <select id="getOrderByBuyer"  resultType="map">
+         select
+            order_id as orderId,
+            order_time as orderTime,
+            t_order.item_id as itemId,
+            t_order.buyer_id as buyerId,
+            order_status as orderStatus,
+            order_number as orderNumber,
+            order_count as orderCount,
+            ti.item_info as itemInfo,
+            ti.item_name as itemName,
+            ti.item_price as itemPrice,
+            ti.item_img as itemImg,
+            tb.buyer_name as buyerName
+        from t_order
+        inner join t_item ti on t_order.item_id = ti.item_id
+        inner join t_buyer tb on t_order.buyer_id = tb.buyer_id
+        where tb.buyer_id=#{buyerId}
+    </select>
 </mapper>
 

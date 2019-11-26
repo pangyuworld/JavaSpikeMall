@@ -8,6 +8,9 @@ import com.pang.utils.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author pang
  * @version V1.0
@@ -36,4 +39,24 @@ public class OrderController {
         return new ResponseJSON<>(orderService.getOrderStatus(orderNumber), ResponseEnum.SUCCESS_OPTION);
     }
 
+    @Token
+    @RequestMapping(value = "/seller", method = RequestMethod.GET)
+    public ResponseJSON<List<Map<String, Object>>> getOrderBySeller(@RequestAttribute String seller) {
+        Long sellerId = Long.parseLong(seller);
+        return new ResponseJSON<>(orderService.getOrderListBySeller(sellerId), ResponseEnum.SUCCESS_OPTION);
+    }
+
+    @Token
+    @RequestMapping(value = "/seller/item/{itemId}", method = RequestMethod.GET)
+    public ResponseJSON<List<Map<String, Object>>> getOrderBySellerAndItem(@RequestAttribute String seller, @PathVariable long itemId) {
+        Long sellerId = Long.parseLong(seller);
+        return new ResponseJSON<>(orderService.getOrderBySellerAndItem(sellerId, itemId), ResponseEnum.SUCCESS_OPTION);
+    }
+
+    @Token
+    @RequestMapping(value = "/buyer", method = RequestMethod.GET)
+    public ResponseJSON<List<Map<String, Object>>> getOrderByBuyer(@RequestAttribute String buyer) {
+        Long buyerId = Long.parseLong(buyer);
+        return new ResponseJSON<>(orderService.getOrderByBuyer(buyerId), ResponseEnum.SUCCESS_OPTION);
+    }
 }
