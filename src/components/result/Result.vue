@@ -19,7 +19,7 @@
           <br />总价：
           <strong class="price">￥{{order.orderCount*item.itemPrice}}</strong>
           <br />下单人：
-          <strong>{{buyerName}}</strong>
+          <strong>{{decodeURI(buyerName)}}</strong>
           <br />
           下单时间：
           <strong>{{formatDate(order.orderTime)}}</strong>

@@ -1,16 +1,7 @@
 import axios from 'axios';
-import qs from "qs"
-import * as cookie from "./cookieTool"
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.baseURL = "/api"
-    // axios.interceptors.request.use((config) => {
-    //     const token = cookie.get('token')
-    //     if (token) {
-    //         config.headers.Authorization = token
-    //     }
-    //     return config
-    // });
 
 // 卖家登录
 export const sellerLogin = params => {
@@ -87,4 +78,24 @@ export const confirm = params => {
 // 获取商家的商品列表
 export const getItemBySeller = params => {
     return axios.get("/item/seller/" + params).then(res => res.data)
+}
+
+// 获取买家信息
+export const getBuyerInfo = params => {
+    return axios.get("/buyer/info").then(res => res.data)
+}
+
+// 获取商家信息
+export const getSellerInfo = params => {
+    return axios.get("/seller/info").then(res => res.data)
+}
+
+// 修改商家信息
+export const updateSeller = params => {
+    return axios.put("/seller", params).then(res => res.data)
+}
+
+// 修改买家信息
+export const updateBuyer = params => {
+    return axios.put("/buyer", params).then(res => res.data)
 }

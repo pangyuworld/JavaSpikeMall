@@ -41,7 +41,7 @@
           <Icon type="md-person-add" />
         </MenuItem>
       </Submenu>
-      <MenuItem name="userName" v-if="loginType">
+      <MenuItem name="userName" v-if="loginType" :to="'/info/'+loginType">
         <Icon type="md-paw" v-if="loginType=='buyer'" />
         <Icon type="ios-calculator" v-if="loginType=='seller'" />
         {{userName}}

@@ -10,6 +10,7 @@ import SellerOrder from "../views/SellerOrder.vue"
 import BuyerOrder from "../views/BuyerOrder.vue"
 import ItemEditor from "../views/ItemEditor.vue"
 import SellerItem from "../views/ItemSeller.vue"
+import SelfInfo from "../views/SelfInfo.vue"
 
 Vue.use(VueRouter)
 
@@ -65,6 +66,10 @@ const routes = [{
     path: "/item/seller/:sellerId",
     name: "sellerItem",
     component: SellerItem
+}, {
+    path: "/info/:loginType",
+    name: "selfInfo",
+    component: SelfInfo
 }]
 
 const router = new VueRouter({
