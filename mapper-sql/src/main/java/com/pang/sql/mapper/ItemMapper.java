@@ -1,12 +1,11 @@
 package com.pang.sql.mapper;
 
 
-
-
 import com.pang.entity.Item;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品
@@ -48,7 +47,7 @@ public interface ItemMapper {
      * @return 商品信息
      */
     @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
-    Item selectItemById(@PathVariable long itemId);
+    Map<String, Object> selectItemById(@PathVariable long itemId);
 
     /**
      * 获得全部商品信息
@@ -56,7 +55,7 @@ public interface ItemMapper {
      * @return 商品信息列表
      */
     @RequestMapping(method = RequestMethod.GET)
-    List<Item> selectAllItem();
+    List<Map<String, Object>> selectAllItem();
 
     /**
      * 更新商品信息
@@ -75,4 +74,13 @@ public interface ItemMapper {
      */
     @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE)
     int deleteItem(@PathVariable long itemId);
+
+    /**
+     * 获取商家的全部商品
+     *
+     * @param sellerId 商家ID
+     * @return 商品列表
+     */
+    @RequestMapping(value = "/seller/{sellerId}", method = RequestMethod.GET)
+    List<Map<String, Object>> selectItemBySeller(@PathVariable long sellerId);
 }

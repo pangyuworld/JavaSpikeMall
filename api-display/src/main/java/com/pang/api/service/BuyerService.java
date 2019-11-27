@@ -118,4 +118,28 @@ public class BuyerService {
         LOGGER.debug("返回登录信息,result={}", result);
         return result;
     }
+
+    /**
+     * 获取买家用户信息
+     *
+     * @param buyerId 买家用户id
+     * @return 买家用户信息
+     */
+    public Buyer getBuyer(long buyerId) {
+        Buyer buyer = buyerMapper.selectBuyerById(buyerId);
+        buyer.setPassword("");
+        return buyer;
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param buyer 用户信息
+     * @return 是否修改成功
+     */
+    public boolean updateBuyer(Buyer buyer) {
+        return buyerMapper.updateBuyer(buyer) > 0;
+    }
 }
+
+ 

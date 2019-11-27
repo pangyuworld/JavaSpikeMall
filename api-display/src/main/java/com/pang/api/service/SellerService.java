@@ -118,4 +118,26 @@ public class SellerService {
         LOGGER.debug("返回登录信息,result={}", result);
         return result;
     }
+
+    /**
+     * 获取商家信息
+     *
+     * @param sellerId 商家ID
+     * @return 商家信息
+     */
+    public Seller getSellerById(long sellerId) {
+        Seller seller = sellerMapper.selectSellerById(sellerId);
+        seller.setPassword("");
+        return seller;
+    }
+
+    /**
+     * 修改卖家信息
+     *
+     * @param seller 卖家信息
+     * @return 是否修改成功
+     */
+    public Boolean updateSeller(Seller seller) {
+        return sellerMapper.updateSeller(seller) > 0;
+    }
 }

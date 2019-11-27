@@ -20,16 +20,32 @@
     <select id="getCount" resultType="int">
         select t_item.item_count from t_item where item_id=#{itemId}
     </select>
-    <select id="selectItemById" resultMap="BaseResultMap">
+    <select id="selectItemById" resultType="map">
         select
-            item_id, item_name, item_count, seller_id,item_img,item_price,item_info
+            item_id as itemId,
+            item_name as itemName,
+            item_count as itemCount,
+            ts.seller_id as sellerId,
+            item_img as itemImg,
+            item_price as itemPrice,
+            item_info as itemInfo,
+            ts.seller_name as sellerName
         from t_item
+        inner join t_seller ts on t_item.seller_id = ts.seller_id
         where item_id=#{itemId}
     </select>
-    <select id="selectAllItem" resultMap="BaseResultMap">
+    <select id="selectAllItem" resultType="map">
         select
-            item_id, item_name, item_count, seller_id,item_img,item_price,item_info
+            item_id as itemId,
+            item_name as itemName,
+            item_count as itemCount,
+            ts.seller_id as sellerId,
+            item_img as itemImg,
+            item_price as itemPrice,
+            item_info as itemInfo,
+            ts.seller_name as sellerName
         from t_item
+        inner join t_seller ts on t_item.seller_id = ts.seller_id
     </select>
     <update id="updateItem" parameterType="com.pang.entity.Item">
         update t_item
@@ -45,4 +61,18 @@
     <delete id="deleteItem">
         delete from t_item where item_id=#{itemId}
     </delete>
+    <select id="selectItemBySeller" resultType="map">
+        select
+            item_id as itemId,
+            item_name as itemName,
+            item_count as itemCount,
+            ts.seller_id as sellerId,
+            item_img as itemImg,
+            item_price as itemPrice,
+            item_info as itemInfo,
+            ts.seller_name as sellerName
+        from t_item
+        inner join t_seller ts on t_item.seller_id = ts.seller_id
+        where ts.seller_id=#{sellerId}
+    </select>
 </mapper>

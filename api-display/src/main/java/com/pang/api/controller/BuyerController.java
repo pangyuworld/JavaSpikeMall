@@ -4,11 +4,9 @@ import com.pang.api.service.BuyerService;
 import com.pang.entity.Buyer;
 import com.pang.restful.ResponseEnum;
 import com.pang.restful.ResponseJSON;
+import com.pang.utils.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -38,4 +36,16 @@ public class BuyerController {
         return new ResponseJSON<>(buyerService.login(userName, password), ResponseEnum.LOGIN_SUCCESS);
     }
 
+    @Token
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ResponseJSON<Buyer> getBuyerInfo(@RequestAttribute String buyer) {
+        Long buyerId = Long.parseLong(buyer);
+        return new ResponseJSON<>(buyerService.getBuyer(buyerId), ResponseEnum.SUCCESS_OPTION);
+    }
+
+    @Token
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseJSON<Boolean> updateBuyer(@RequestBody Buyer buyer) {
+        return new ResponseJSON<>(buyerService.updateBuyer(buyer), ResponseEnum.SUCCESS_OPTION);
+    }
 }

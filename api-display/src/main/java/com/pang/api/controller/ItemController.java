@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author pang
@@ -33,12 +34,12 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/{itemId}", method = RequestMethod.GET)
-    public ResponseJSON<Item> getItem(@PathVariable Long itemId) {
+    public ResponseJSON<Map<String, Object>> getItem(@PathVariable Long itemId) {
         return new ResponseJSON<>(itemService.getItemById(itemId), ResponseEnum.SUCCESS_OPTION);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseJSON<List<Item>> getItem() {
+    public ResponseJSON<List<Map<String, Object>>> getItem() {
         return new ResponseJSON<>(itemService.getAllItem(), ResponseEnum.SUCCESS_OPTION);
     }
 
@@ -51,9 +52,14 @@ public class ItemController {
     }
 
     @Token
-    @RequestMapping(value = "/confirm/{sellerId}",method = RequestMethod.POST)
-    public ResponseJSON<Boolean> confirm(@PathVariable long sellerId,@RequestAttribute String seller){
-        boolean result=Long.parseLong(seller)==sellerId;
-        return new ResponseJSON<>(result,ResponseEnum.SUCCESS_OPTION);
+    @RequestMapping(value = "/confirm/{sellerId}", method = RequestMethod.POST)
+    public ResponseJSON<Boolean> confirm(@PathVariable long sellerId, @RequestAttribute String seller) {
+        boolean result = Long.parseLong(seller) == sellerId;
+        return new ResponseJSON<>(result, ResponseEnum.SUCCESS_OPTION);
+    }
+
+    @RequestMapping(value = "/seller/{sellerId}", method = RequestMethod.GET)
+    public ResponseJSON<List<Map<String, Object>>> getItemBySeller(@PathVariable long sellerId) {
+        return new ResponseJSON<>(itemService.getItemBySeller(sellerId), ResponseEnum.SUCCESS_OPTION);
     }
 }

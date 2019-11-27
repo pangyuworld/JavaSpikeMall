@@ -1,14 +1,13 @@
 package com.pang.api.controller;
 
 import com.pang.api.service.SellerService;
+import com.pang.entity.Buyer;
 import com.pang.entity.Seller;
 import com.pang.restful.ResponseEnum;
 import com.pang.restful.ResponseJSON;
+import com.pang.utils.token.Token;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -37,4 +36,18 @@ public class SellerController {
         String password = map.get("password");
         return new ResponseJSON<>(sellerService.login(userName, password), ResponseEnum.LOGIN_SUCCESS);
     }
+
+    @Token
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ResponseJSON<Seller> getInfo(@RequestAttribute String seller) {
+        Long sellerId = Long.parseLong(seller);
+        return new ResponseJSON<>(sellerService.getSellerById(sellerId), ResponseEnum.SUCCESS_OPTION);
+    }
+
+    @Token
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseJSON<Boolean> updateBuyer(@RequestBody Seller seller) {
+        return new ResponseJSON<>(sellerService.updateSeller(seller), ResponseEnum.SUCCESS_OPTION);
+    }
+
 }

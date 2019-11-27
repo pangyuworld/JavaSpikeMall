@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author pang
@@ -67,7 +68,7 @@ public class ItemService {
      *
      * @return 商品信息列表
      */
-    public List<Item> getAllItem() {
+    public List<Map<String, Object>> getAllItem() {
         LOGGER.debug("获得所有商品信息");
         return itemMapper.selectAllItem();
     }
@@ -78,7 +79,7 @@ public class ItemService {
      * @param itemId 商品ID
      * @return 商品信息
      */
-    public Item getItemById(long itemId) {
+    public Map<String, Object> getItemById(long itemId) {
         LOGGER.debug("获得指定ID的商品信息,itemId={}", itemId);
         return itemMapper.selectItemById(itemId);
     }
@@ -91,5 +92,15 @@ public class ItemService {
      */
     public boolean updateItem(Item item) {
         return itemMapper.updateItem(item) > 0;
+    }
+
+    /**
+     * 获取商家的全部商品
+     *
+     * @param sellerId 商家ID
+     * @return 商品信息列表
+     */
+    public List<Map<String, Object>> getItemBySeller(long sellerId) {
+        return itemMapper.selectItemBySeller(sellerId);
     }
 }
