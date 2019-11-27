@@ -9,6 +9,7 @@ import AddItem from "../views/AddItem.vue"
 import SellerOrder from "../views/SellerOrder.vue"
 import BuyerOrder from "../views/BuyerOrder.vue"
 import ItemEditor from "../views/ItemEditor.vue"
+import SellerItem from "../views/ItemSeller.vue"
 
 Vue.use(VueRouter)
 
@@ -60,6 +61,10 @@ const routes = [{
     path: "/seller/item/:itemId",
     name: "itemEditor",
     component: ItemEditor
+}, {
+    path: "/item/seller/:sellerId",
+    name: "sellerItem",
+    component: SellerItem
 }]
 
 const router = new VueRouter({

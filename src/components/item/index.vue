@@ -5,7 +5,10 @@
         <img width="100%" :src="item.itemImg" />
       </Col>
       <Col span="10">
-        <h3>{{item.itemName}}</h3>
+        <h3>
+          {{item.itemName}} --
+          <router-link :to="'/item/seller/'+item.sellerId">{{item.sellerName}}</router-link>
+        </h3>
         <br />
         <p class="itemInfo">{{item.itemInfo}}</p>
         <br />

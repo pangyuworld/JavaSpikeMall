@@ -83,3 +83,8 @@ export const editItem = params => {
 export const confirm = params => {
     return axios.post("/item/confirm/" + params).then(res => res.data)
 }
+
+// 获取商家的商品列表
+export const getItemBySeller = params => {
+    return axios.get("/item/seller/" + params).then(res => res.data)
+}
